@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="./.github/assets/finish-flag.png" alt="Logo" height="200">
+  <img src="./.github/pizza.png" alt="Logo" height="200">
   <h1 align="center"><strong>PIZZARIA</strong></h1>
   <p align="center">
 	  API com equipes da Fórmula 1, leve e eficiente para aplicações web e móveis, utilizando Node.js e Fastify. Esta API simplificada foca em operações CRUD básicas, ideal para projetos que necessitam de respostas rápidas e um ambiente minimalista.
