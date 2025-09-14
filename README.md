@@ -1,3 +1,3 @@
 # pizza mimi
 
-teste
+[![My Skills](https://skillicons.dev/icons?i=typescript)](https://skillicons.dev)
