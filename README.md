@@ -69,3 +69,19 @@ $ npm run start:dev
 |                                               |
 
 <br />
+
+
+[flaticon-icon]: https://www.flaticon.com/free-sticker/finish-flag_7295076
+[nodejs-badge]: https://img.shields.io/badge/Node.js-%3E%3D20.00-blue.svg
+[nodejs]: https://nodejs.org/
+[ts-badge]: https://img.shields.io/badge/TypeScript-5.8-blue.svg
+[typescript]: https://www.typescriptlang.org/
+[typescript-npm]: https://www.npmjs.com/package/typescript
+[fastify-badge]: https://img.shields.io/badge/Fastify-%3E%3D4.0-black.svg
+[fastify]: https://www.fastify.io/
+[fastify-cors-badge]: https://img.shields.io/badge/@fastify/cors-latest-black.svg
+[fastify-cors]: https://github.com/fastify/fastify-cors
+[tsup-badge]: https://img.shields.io/badge/tsup-latest-blue.svg
+[tsup]: https://github.com/egoist/tsup
+[tsx-badge]: https://img.shields.io/badge/tsx-latest-blue.svg
+[tsx]: https://github.com/esbuild-kit/tsx
