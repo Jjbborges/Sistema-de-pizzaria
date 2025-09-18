@@ -1,4 +1,4 @@
-const readlineSync = require("readline-sync");
+import readlineSync = require("readline-sync");
 
 type Pizza = {
   id: number;
