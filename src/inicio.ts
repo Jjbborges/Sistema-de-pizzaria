@@ -7,10 +7,10 @@ type Pizza = {
 };
 
 const cardapio: Pizza[] = [
-  { id: 1, nome: "Mussarela", preco: 30 },
-  { id: 2, nome: "Calabresa", preco: 35 },
-  { id: 3, nome: "Portuguesa", preco: 40 },
-  { id: 4, nome: "Frango c/ Catupiry", preco: 42 },
+  { id: 1, nome: "Mussarela", preco: 60.00 },
+  { id: 2, nome: "Calabresa", preco: 60.00 },
+  { id: 3, nome: "Portuguesa", preco: 60.00 },
+  { id: 4, nome: "Frango c/ Catupiry", preco: 60.00 },
 ];
 
 let carrinho: Pizza[] = [];
