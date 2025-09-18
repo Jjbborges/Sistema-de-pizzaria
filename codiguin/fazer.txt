@@ -1,0 +1,7 @@
+- Metodos de pagamento (dinheiro, pix, cartão, se precisa de troco)
+- Pizza mais pedida por mês, sabor mais pedido
+- Cadastro de cliente (cpf, email)
+- Cadastro de produtos (ingredientes, mililitros, valores e quantidade de vendas)
+- Add observações de pedido
+- Promoção
+- Confirmar o locar e emitir recibo de compra
