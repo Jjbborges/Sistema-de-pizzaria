@@ -1,39 +1,34 @@
 <div align="center">
 
   <img src="./pizza.png" alt="Logo" height="200">
-  <h1 align="center"><strong>PIZZARIA (nome)</strong></h1>
+  <h1 align="center"><strong>SISTEMA DA PIZZARIA (nome)</strong></h1>
   <p align="center">
-	 Este é um projeto completo de um site de pizzaria desenvolvido em TypeScript.
+	 Este é um projeto completo de um site de pizzaria desenvolvido em TypeScript + Node.js. <br> Aplicativo criado para gerenciar Entrada, Armazenamento, Saída e Consulta por dados do pedido.
   </p>
 
 </div>
 
 <br />
 
-# :computer: Tecnologias
+## :computer: Tecnologias
 
 Este projeto foi desenvolvido com as seguintes linguagens: 
 <br><br>
-[![My Skills](https://skillicons.dev/icons?i=typescript,javascript&theme=light)](https://skillicons.dev) 
-
-### 📦 Dependências 
-
-  <!-- Badges -->
-<div align="start">
-  
-  [![Node.js][nodejs-badge]][nodejs]
-  [![TypeScript][ts-badge]][typescript]
-  [![Fastify][fastify-badge]][fastify]
-  [![@fastify/cors][fastify-cors-badge]][fastify-cors]
-  [![tsup][tsup-badge]][tsup]
-  [![tsx][tsx-badge]][tsx]
+[![My Skills](https://skillicons.dev/icons?i=typescript,nodejs&theme=dark)](https://skillicons.dev) 
 
 </div>
 
 ### 📄 Arquivos
 
-- .gitignore - Ignora pastas como node_modules
-- tsconfig.json - Configurações do TypeScript
+- package.json - Gerencia as dependências e scripts do projeto.
+- tsconfig.json - Configurações do TypeScript.
+
+## ⚙️ Recursos
+
+* **Entrada**: Nome Completo, CPF, Telefone, Endereço, Sabores de Pizza, Bebidas, Modo de entrega, Forma de Pagamento.
+* **Armazenamento**: `csv/entradas.csv`, `csv/pedidos.csv`, `csv/saidas.csv` + `csv/resumo_diario.txt`. // não entendi essa parte, validar quem estiver fazendo código
+* **Saída**: 
+* **Consulta por CPF**: 
 
 ### ⚡ Scripts
 
@@ -42,7 +37,17 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 - `npm run start:watch`: Executa o servidor em modo de desenvolvimento com suporte a recarregamento automático ao alterar os arquivos.
 - `npm run start:dist`: Compila o projeto e executa a versão compilada a partir da pasta dist.
 
-<br />
+## 📁 Estrutura de pastas
+
+```
+pizzaria/
+├─ js/            # arquivos .js gerados pelo TypeScript
+├─ ts/            # código-fonte .ts (ex.: ts/index.ts)
+├─ csv/           # base de dados em CSV + resumo TXT
+├─ json/          # (opcional) configs auxiliares
+├─ package.json
+└─ tsconfig.json
+```
 
 # 👩🏽‍💻 Como utilizar
 
@@ -70,18 +75,109 @@ $ npm run start:dev
 
 <br />
 
+### Arquivos CSV gerados
 
-[flaticon-icon]: https://www.flaticon.com/free-sticker/finish-flag_7295076
-[nodejs-badge]: https://img.shields.io/badge/Node.js-%3E%3D20.00-blue.svg
-[nodejs]: https://nodejs.org/
-[ts-badge]: https://img.shields.io/badge/TypeScript-5.8-blue.svg
-[typescript]: https://www.typescriptlang.org/
-[typescript-npm]: https://www.npmjs.com/package/typescript
-[fastify-badge]: https://img.shields.io/badge/Fastify-%3E%3D4.0-black.svg
-[fastify]: https://www.fastify.io/
-[fastify-cors-badge]: https://img.shields.io/badge/@fastify/cors-latest-black.svg
-[fastify-cors]: https://github.com/fastify/fastify-cors
-[tsup-badge]: https://img.shields.io/badge/tsup-latest-blue.svg
-[tsup]: https://github.com/egoist/tsup
-[tsx-badge]: https://img.shields.io/badge/tsx-latest-blue.svg
-[tsx]: https://github.com/esbuild-kit/tsx
+* `csv/entradas.csv`  → `entradaISO,placa,modelo,cor,valorHora`
+* `csv/ativos.csv`    → `entradaISO,placa,modelo,cor,valorHora`
+* `csv/saidas.csv`    → `entradaISO,saidaISO,placa,modelo,cor,valorHora,horas,preco`
+* `csv/resumo_diario.txt` → log simples de entradas/saídas (texto)
+
+---
+
+## 🔧 Pré-requisitos
+
+* **Node.js 16+** (recomendado 18 ou 20)
+* **npm**
+
+---
+
+## 🚀 Instalação
+
+Na **raiz** do projeto (onde está o `package.json`):
+
+```bash
+npm i -D typescript ts-node @types/node
+```
+
+Crie (ou confira) os scripts no **package.json**:
+
+```json
+{
+  "scripts": {
+    "build": "tsc",
+    "start": "node js/index.js",
+    "dev": "ts-node ts/index.ts"
+  }
+}
+```
+
+`tsconfig.json` mínimo recomendado:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "rootDir": "./ts",
+    "outDir": "./js",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "lib": ["ES2020"]
+  },
+  "include": ["ts/**/*"]
+}
+```
+
+> No VS Code, se aparecerem erros de tipos do Node, use **Ctrl+Shift+P → TypeScript: Restart TS Server**.
+
+---
+
+## ▶️ Como executar
+
+Modo desenvolvimento (executa direto o TypeScript):
+
+```bash
+npm run dev
+```
+
+Transpilar e rodar o JS gerado:
+
+```bash
+npm run build && npm start
+```
+
+---
+
+## 🖥️ Uso (menu de console)
+
+1. **Entrada** → informe **placa**, **modelo**, **cor** e **valor da hora**. O sistema grava em `entradas.csv` e `ativos.csv`.
+2. **Saída** → informe a **placa**. O sistema remove de `ativos.csv`, calcula **horas** (ceil, mínimo 1) e **preço**, e grava em `saidas.csv`.
+3. **Consulta por placa** → primeiro busca em `ativos.csv`; se não encontrar, mostra a **última saída** de `saidas.csv`.
+4. **Listar ativos** → imprime no console todos os veículos atualmente no pátio.
+
+---
+
+## 🗃️ Campos e formatos
+
+* **Datas**: ISO (ex.: `2025-08-19T18:40:02.123Z`).
+* **Placa**: armazenada em **maiúsculas**.
+* **valorHora**: número decimal (ex.: `12.5`).
+* **horas**: inteiro ≥ 1 (arredondado para cima a partir da diferença de horários).
+* **preco**: `horas × valorHora` com 2 casas decimais.
+
+---
+
+## 🧹 Limpeza / Reset
+
+Para reiniciar os dados, apague os CSVs dentro de `csv/` (eles serão recriados com cabeçalho na próxima execução):
+
+```bash
+rm -f csv/*.csv csv/resumo_diario.txt
+```
+
+*(No Windows, apague manualmente ou use `del` no PowerShell.)*
+
+---
