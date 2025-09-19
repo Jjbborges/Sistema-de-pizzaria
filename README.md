@@ -27,8 +27,9 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 
 * **Entrada**: Nome Completo, CPF, Telefone, Endereço, Sabores de Pizza, Bebidas, Modo de entrega, Forma de Pagamento.
 * **Armazenamento**: `csv/entradas.csv`, `csv/pedidos.csv`, `csv/saidas.csv` + `csv/resumo_diario.txt`. // não entendi essa parte, validar quem estiver fazendo código
-* **Saída**: 
-* **Consulta por CPF**: 
+* **Saída**: Preço, Quantidade, Produtos escolhidos, Modo de Entrega. 
+* **Consulta por CPF**: Verifica histórico de pedidos realizados com esse CPF. 
+* **Consulta Pizza Mais Pedida**: Verifica qual sabor de pizza saiu mais no dia/mês/ano.
 
 ### ⚡ Scripts
 
@@ -74,6 +75,18 @@ $ npm run start:dev
 |                                               |
 
 <br />
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Arquivos CSV gerados
 
@@ -170,14 +183,3 @@ npm run build && npm start
 
 ---
 
-## 🧹 Limpeza / Reset
-
-Para reiniciar os dados, apague os CSVs dentro de `csv/` (eles serão recriados com cabeçalho na próxima execução):
-
-```bash
-rm -f csv/*.csv csv/resumo_diario.txt
-```
-
-*(No Windows, apague manualmente ou use `del` no PowerShell.)*
-
----
