@@ -18,25 +18,37 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 
 </div>
 
-### 📄 Arquivos
+
+
+
+
+
+
+### 📄 Arquivos // ainda arrumar
 
 - package.json - Gerencia as dependências e scripts do projeto.
 - tsconfig.json - Configurações do TypeScript.
+
+## 🖥️ Uso (menu de console) // ainda arrumar
+
+1. **Entrada** → informe **Nome completo**, **CPF**, **Telefone**, **Pizzas**, **Bebidas**, **Modo de Entrega**, **Forma de Pagamento** e **Endereço**. O sistema grava em `cadastro.csv`.
+3. **Saída** → O Sistema calcula o preço dos produtos escolhidos e cria a nota fiscal do pedido. O sistema grava em `pedidos.csv`.
+4. **Consulta por placa** → primeiro busca em `ativos.csv`; se não encontrar, mostra a **última saída** de `saidas.csv`.
+5. **Listar ativos** → imprime no console todos os veículos atualmente no pátio.
+6. **Consulta por CPF**: Procura o histórico de pedidos pelo **CPF** inserido e devolve os valores e produtos escolhidos nas compras anteriores.
+7. **Consulta Pizza Mais Pedida**: Inserir um **dia/mês/ano**, que ao ser executado, o sistema devolverá os produtos mais pedidos em tal data.
 
 ## ⚙️ Recursos
 
 * **Entrada**: Nome Completo, CPF, Telefone, Endereço, Sabores de Pizza, Bebidas, Modo de entrega, Forma de Pagamento.
 * **Armazenamento**: `csv/entradas.csv`, `csv/pedidos.csv`, `csv/saidas.csv` + `csv/resumo_diario.txt`. // não entendi essa parte, validar quem estiver fazendo código
-* **Saída**: Preço, Quantidade, Produtos escolhidos, Modo de Entrega. 
+* **Saída**: Preço, Quantidade, Produtos escolhidos. 
 * **Consulta por CPF**: Verifica histórico de pedidos realizados com esse CPF. 
 * **Consulta Pizza Mais Pedida**: Verifica qual sabor de pizza saiu mais no dia/mês/ano.
 
 ### ⚡ Scripts
 
-- `npm run dist`: Compila os arquivos TypeScript para JavaScript na pasta dist.
-- `npm run start:dev`: Executa o servidor em modo de desenvolvimento com as variáveis de ambiente carregadas do arquivo .env.
-- `npm run start:watch`: Executa o servidor em modo de desenvolvimento com suporte a recarregamento automático ao alterar os arquivos.
-- `npm run start:dist`: Compila o projeto e executa a versão compilada a partir da pasta dist.
+- `npm tsc`: Compila os arquivos TypeScript para JavaScript na pasta dist.
 
 ## 📁 Estrutura de pastas
 
@@ -75,6 +87,9 @@ $ npm run start:dev
 |                                               |
 
 <br />
+
+
+
 
 
 
@@ -171,15 +186,4 @@ npm run build && npm start
 3. **Consulta por placa** → primeiro busca em `ativos.csv`; se não encontrar, mostra a **última saída** de `saidas.csv`.
 4. **Listar ativos** → imprime no console todos os veículos atualmente no pátio.
 
----
-
-## 🗃️ Campos e formatos
-
-* **Datas**: ISO (ex.: `2025-08-19T18:40:02.123Z`).
-* **Placa**: armazenada em **maiúsculas**.
-* **valorHora**: número decimal (ex.: `12.5`).
-* **horas**: inteiro ≥ 1 (arredondado para cima a partir da diferença de horários).
-* **preco**: `horas × valorHora` com 2 casas decimais.
-
----
 
