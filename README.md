@@ -97,5 +97,75 @@ npm run build && npm start
 
 
 
+## 🔧 Pré-requisitos
 
+* **Node.js 16+** (recomendado 18 ou 20)
+* **npm**
 
+---
+
+## 🚀 Instalação
+
+Na **raiz** do projeto (onde está o `package.json`):
+
+```bash
+npm i -D typescript ts-node @types/node
+```
+
+Crie (ou confira) os scripts no **package.json**:
+
+```json
+{
+  "scripts": {
+    "build": "tsc",
+    "start": "node js/index.js",
+    "dev": "ts-node ts/index.ts"
+  }
+}
+```
+
+`tsconfig.json` mínimo recomendado:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "rootDir": "./ts",
+    "outDir": "./js",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "lib": ["ES2020"]
+  },
+  "include": ["ts/**/*"]
+}
+```
+
+> No VS Code, se aparecerem erros de tipos do Node, use **Ctrl+Shift+P → TypeScript: Restart TS Server**.
+
+---
+
+## 🗃️ Campos e formatos
+
+* **Datas**: ISO (ex.: `2025-08-19T18:40:02.123Z`).
+* **Placa**: armazenada em **maiúsculas**.
+* **valorHora**: número decimal (ex.: `12.5`).
+* **horas**: inteiro ≥ 1 (arredondado para cima a partir da diferença de horários).
+* **preco**: `horas × valorHora` com 2 casas decimais.
+
+---
+
+## 🧹 Limpeza / Reset
+
+Para reiniciar os dados, apague os CSVs dentro de `csv/` (eles serão recriados com cabeçalho na próxima execução):
+
+```bash
+rm -f csv/*.csv csv/resumo_diario.txt
+```
+
+*(No Windows, apague manualmente ou use `del` no PowerShell.)*
+
+---
