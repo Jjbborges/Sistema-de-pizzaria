@@ -52,7 +52,6 @@ function mostrarMenuPrincipal(): void {
   console.log("1 - Cadastrar/Login Cliente");
   console.log("2 - Pedir");
   console.log("3 - Meu Histórico de Compras");
-  console.log("4 - Consulta por CPF");
   console.log("5 - Pizza Mais Pedida");
   console.log("0 - Sair");
 
