@@ -16,8 +16,8 @@ function cadastrarCliente(clienteAtual) {
         endereco,
         historicoPedidos: [],
     };
-    // Aqui você pode adicionar código para gravar no cadastro.csv
     console.log(`✅ Cliente ${novoCliente.nome} cadastrado com sucesso!`);
+    const CAMINHO_CSV_PEDIDOS = "csv/cadastro.csv";
     return novoCliente;
 }
 //# sourceMappingURL=cadastroService.js.map

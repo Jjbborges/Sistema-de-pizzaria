@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const readlineSync = require("readline-sync");
 const cadastroService_1 = require("./services/cadastroService");
 const pedidoService_1 = require("./services/pedidoService");
-const consultaService_1 = require("./services/consultaService");
 const cardapio_1 = require("./data/cardapio");
 // --- Funções de entrada ---
 function obterString(prompt) {
@@ -122,23 +121,6 @@ function main() {
                     console.log("❌ Faça login para consultar o histórico.");
                     break;
                 }
-                const historico = (0, consultaService_1.consultarPorCPF)(clienteAtual.cpf);
-                console.log("\n--- Histórico de Compras ---");
-                console.log(historico.join("\n") || "Nenhum pedido encontrado.");
-                break;
-            // --- Consulta por CPF ---
-            case 4:
-                const cpfConsulta = obterString("Digite o CPF para consulta");
-                const pedidosPorCpf = (0, consultaService_1.consultarPorCPF)(cpfConsulta);
-                console.log("\n--- Pedidos encontrados ---");
-                console.log(pedidosPorCpf.join("\n") || "Nenhum pedido encontrado.");
-                break;
-            // --- Pizza Mais Pedida ---
-            case 5:
-                const data = obterString("Digite a data (DD/MM/AAAA)");
-                const pizzaTop = (0, consultaService_1.pizzaMaisPedida)(data);
-                console.log(`🍕 Pizza mais pedida em ${data}: ${pizzaTop}`);
-                break;
             // --- Sair ---
             case 0:
                 console.log("👋 Saindo do sistema...");
