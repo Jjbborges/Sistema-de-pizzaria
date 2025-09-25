@@ -9,7 +9,7 @@ export function calcularTotalPedido(itens: PedidoItem[]): number {
   return itens.reduce((sum, pi) => sum + pi.item.preco * pi.quantidade, 0);
 }
 
-export function criarPedido(cliente: Cliente, itens: PedidoItem[], _number: number): Pedido {
+export function criarPedido(cliente: Cliente, itens: PedidoItem[], _number: number, pagamento: string): Pedido {
   const total = calcularTotalPedido(itens);
   const novoPedido: Pedido = {
     id: "PED-" + Date.now(),

@@ -1,3 +1,4 @@
-import type { Cliente } from "../models/pedido";
-export declare function cadastrarCliente(clienteAtual: Cliente): Cliente;
+import { Cliente } from "../models/pedido";
+export declare function cadastrarCliente(cliente: Cliente): Cliente;
+export declare function buscarClientePorCPF(cpf: string): Cliente | undefined;
 //# sourceMappingURL=cadastroService.d.ts.map

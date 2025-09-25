@@ -1,9 +1,27 @@
 {
+  "name": "pizzaria-parma",
+  "version": "1.0.0",
+  "description": "Sistema de pizzaria em TypeScript",
+  "main": "dist/inicio.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/inicio.js",
+    "dev": "ts-node src/inicio.ts"
+  },
+  "keywords": [
+    "pizzaria",
+    "typescript",
+    "nodejs"
+  ],
+  "author": "Seu Nome",
+  "license": "MIT",
   "dependencies": {
     "readline-sync": "^1.4.10"
   },
   "devDependencies": {
-    "@types/node": "^24.5.1",
-    "@types/readline-sync": "^1.4.8"
+    "@types/node": "^20.19.17",
+    "@types/readline-sync": "^1.4.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
   }
 }

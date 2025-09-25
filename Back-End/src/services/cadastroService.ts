@@ -1,25 +1,56 @@
-import type { Cliente } from "../models/pedido";
-import { obterString } from "../utils/inputUtils";
-const CAMINHO_CSV_PEDIDOS = "csv/cadastro.csv";
+// src/services/cadastroService.ts
+import { Cliente } from "../models/pedido";
+import { lerCSV, salvarCSV } from "../utils/fileUtils";
 
-let proximoId = 1; // contador global de clientes
+const caminhoCadastro = "./csv/cadastro.csv";
 
-export function cadastrarCliente(clienteAtual: Cliente): Cliente {
-  const nome = obterString("Digite seu nome completo");
-  const cpf = obterString("Digite seu CPF");
-  const telefone = obterString("Digite seu telefone");
-  const endereco = obterString("Digite seu endereço");
+// Função para cadastrar ou buscar cliente
+export function cadastrarCliente(cliente: Cliente): Cliente {
+  const linhas = lerCSV(caminhoCadastro);
 
+  // Verifica se já existe cliente com o mesmo CPF
+  const linhaExistente = linhas.find(l => l[2] === cliente.cpf);
+
+  if (linhaExistente) {
+    // Cliente já existe, retorna os dados existentes
+    console.log(`👋 Bem-vindo de volta, ${linhaExistente[1]}!`);
+    return {
+      id: Number(linhaExistente[0]),
+      nome: linhaExistente[1] || "",
+      cpf: linhaExistente[2] || "",
+      telefone: linhaExistente[3] || "",
+      endereco: linhaExistente[4] || "",
+      historicoPedidos: [] // histórico pode ser carregado depois
+    };
+  }
+
+  // Se não existir, cria um novo cliente
+  const clienteId = Date.now(); // Gera ID único
   const novoCliente: Cliente = {
-    id: proximoId++,
-    nome,
-    cpf,
-    telefone,
-    endereco,
-    historicoPedidos: [],
+    ...cliente,
+    id: clienteId,
+    historicoPedidos: []
   };
 
-  console.log(`✅ Cliente ${novoCliente.nome} cadastrado com sucesso!`);
+  // Adiciona ao CSV
+  linhas.push([novoCliente.id.toString(), novoCliente.nome, novoCliente.cpf, novoCliente.telefone, novoCliente.endereco]);
+  salvarCSV(caminhoCadastro, linhas);
 
+  console.log(`✅ Cliente ${novoCliente.nome} cadastrado com sucesso!`);
   return novoCliente;
+}
+
+// Opcional: função para buscar cliente pelo CPF
+export function buscarClientePorCPF(cpf: string): Cliente | undefined {
+  const linhas = lerCSV(caminhoCadastro);
+  const linha = linhas.find(l => l[2] === cpf);
+  if (!linha) return undefined;
+  return {
+    id: Number(linha[0]),
+    nome: linha[1] || "",
+    cpf: linha[2] || "",
+    telefone: linha[3] || "",
+    endereco: linha[4] || "",
+    historicoPedidos: []
+  };
 }

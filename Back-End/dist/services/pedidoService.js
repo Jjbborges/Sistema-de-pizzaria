@@ -7,7 +7,7 @@ const CAMINHO_CSV_PEDIDOS = "csv/pedidos.csv";
 function calcularTotalPedido(itens) {
     return itens.reduce((sum, pi) => sum + pi.item.preco * pi.quantidade, 0);
 }
-function criarPedido(cliente, itens, _number) {
+function criarPedido(cliente, itens, _number, pagamento) {
     const total = calcularTotalPedido(itens);
     const novoPedido = {
         id: "PED-" + Date.now(),
