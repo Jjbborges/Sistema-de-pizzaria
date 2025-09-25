@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const readlineSync = require("readline-sync");
 const cadastroService_1 = require("./services/cadastroService");
 const pedidoService_1 = require("./services/pedidoService");
-const cardapio_1 = require("./data/cardapio");
-//Funções de entrada e validação
+const produtoService_1 = require("./services/produtoService");
+// Funções de entrada e validação
 function obterString(prompt, validar, erro) {
     let valor;
     do {
@@ -19,7 +19,7 @@ function obterString(prompt, validar, erro) {
 function obterNumero(prompt, permitirZero = true) {
     let numero;
     do {
-        numero = readlineSync.questionInt(`${prompt}: `);
+        numero = readlineSync.questionFloat(`${prompt}: `);
         if (!permitirZero && numero < 0)
             console.log("Por favor, insira um número válido.");
     } while (!permitirZero && numero < 0);
@@ -28,10 +28,10 @@ function obterNumero(prompt, permitirZero = true) {
 function confirmarPergunta(prompt) {
     return readlineSync.keyInYNStrict(prompt);
 }
-//Estado da aplicação
+// Estado da aplicação
 let clienteAtual;
 let carrinho = [];
-//MARK: cardápio
+// MARK: cardápio
 function escolherItem(cardapio) {
     console.log("\n--- CARDÁPIO ---");
     cardapio.forEach((item) => console.log(`${item.id} - ${item.nome} - R$${item.preco.toFixed(2)}`));
@@ -49,20 +49,21 @@ function escolherItem(cardapio) {
     const quantidade = obterNumero("Digite a quantidade desejada", false);
     return { item: itemEscolhido, quantidade };
 }
-//MARK: Menu
+// MARK: Menu
 function mostrarMenuPrincipal() {
     console.log("\n===== PIZZARIA PARMA =====");
     console.log("1 - Cadastrar/Login");
-    console.log("2 - Pedido");
+    console.log("2 - Fazer pedido");
     console.log("3 - Meu Histórico de Compras");
     console.log("4 - Pizza Mais Pedida");
+    console.log("5 - Gerenciar Cardápio");
     console.log("0 - Sair");
     if (clienteAtual)
         console.log(`\nCliente Atual: ${clienteAtual.nome} | CPF: ${clienteAtual.cpf}`);
     else
         console.log("\nNenhum cliente logado.");
 }
-//MARK: recibo
+// MARK: recibo
 function gerarRecibo(cliente, itens, total, pagamento, endereco, observacao) {
     let recibo = "\n===== RECIBO PIZZARIA Parma =====\n";
     recibo += `Cliente: ${cliente.nome}\n`;
@@ -80,7 +81,7 @@ function gerarRecibo(cliente, itens, total, pagamento, endereco, observacao) {
     recibo += "================================\n";
     return recibo;
 }
-//MARK: CUIDADO
+// MARK: Pizza mais pedida
 function pizzaMaisPedida(cliente, periodo) {
     const contagem = {};
     const agora = new Date();
@@ -112,7 +113,11 @@ function pizzaMaisPedida(cliente, periodo) {
     const maisPedida = Object.entries(contagem).sort((a, b) => b[1] - a[1])[0];
     return maisPedida ? `${maisPedida[0]} (${maisPedida[1]}x)` : "Nenhuma pizza nesse período";
 }
-//MARK: Principal 
+// MARK: Obter cardápio direto do CSV
+function obterCardapio(categoria) {
+    return (0, produtoService_1.listarProdutosPorCategoria)(categoria);
+}
+// MARK: Principal
 function main() {
     while (true) {
         mostrarMenuPrincipal();
@@ -146,14 +151,14 @@ function main() {
                     console.log("3 - Adicionar Sobremesa");
                     console.log("4 - Finalizar Pedido");
                     console.log("0 - Voltar ao menu principal");
-                    const opPedido = obterNumero("Escolha uma opção");
+                    const opPedido = obterNumero("Escolha uma opcao");
                     let item = null;
                     if (opPedido === 1)
-                        item = escolherItem(cardapio_1.pizzas);
+                        item = escolherItem(obterCardapio("pizza"));
                     else if (opPedido === 2)
-                        item = escolherItem(cardapio_1.bebidas);
+                        item = escolherItem(obterCardapio("bebida"));
                     else if (opPedido === 3)
-                        item = escolherItem(cardapio_1.sobremesas);
+                        item = escolherItem(obterCardapio("sobremesa"));
                     if (item) {
                         carrinho.push(item);
                         console.log(` ${item.quantidade}x ${item.item.nome} adicionado(s) ao carrinho!`);
@@ -163,9 +168,9 @@ function main() {
                             console.log("Carrinho vazio!");
                             continue;
                         }
-                        const observacao = confirmarPergunta("Deseja adicionar alguma observação?") ? obterString("Digite sua observação") : "";
-                        const enderecoConfirmado = confirmarPergunta(`Deseja confirmar o endereço atual? ${clienteAtual.endereco}`) ? clienteAtual.endereco : obterString("Digite seu endereço de entrega");
-                        const pagamento = obterString("Digite a forma de pagamento (Dinheiro / Cartão / Pix)");
+                        const observacao = confirmarPergunta("Deseja adicionar alguma observacao?") ? obterString("Digite sua observacao") : "";
+                        const enderecoConfirmado = confirmarPergunta(`Deseja confirmar o endereco atual? ${clienteAtual.endereco}`) ? clienteAtual.endereco : obterString("Digite seu endereco de entrega");
+                        const pagamento = obterString("Digite a forma de pagamento (Dinheiro / Cartao / Pix)");
                         const total = (0, pedidoService_1.calcularTotalPedido)(carrinho);
                         (0, pedidoService_1.criarPedido)(clienteAtual, carrinho, total, pagamento, enderecoConfirmado, observacao);
                         console.log(gerarRecibo(clienteAtual, carrinho, total, pagamento, enderecoConfirmado, observacao));
@@ -194,6 +199,70 @@ function main() {
                 console.log(`Semanal: ${pizzaMaisPedida(clienteAtual, "semanal")}`);
                 console.log(`Mensal: ${pizzaMaisPedida(clienteAtual, "mensal")}`);
                 console.log(`Anual: ${pizzaMaisPedida(clienteAtual, "anual")}`);
+                break;
+            case 5:
+                while (true) {
+                    console.log("\n--- GERENCIAR CARDÁPIO ---");
+                    console.log("1 - Cadastrar novo produto");
+                    console.log("2 - Atualizar produto existente");
+                    console.log("3 - Excluir produto");
+                    console.log("4 - Listar produtos");
+                    console.log("0 - Voltar ao menu principal");
+                    const opCardapio = obterNumero("Escolha uma opção");
+                    switch (opCardapio) {
+                        case 1: {
+                            const nomeNovo = obterString("Digite o nome do produto");
+                            const precoNovo = obterNumero("Digite o preço do produto", false);
+                            const categoriaNova = obterString("Digite a categoria (pizza / bebida / sobremesa)", v => ["pizza", "bebida", "sobremesa"].includes(v.toLowerCase()), "Categoria inválida");
+                            const idNovo = Date.now();
+                            (0, produtoService_1.cadastrarProduto)({ id: idNovo, nome: nomeNovo, preco: precoNovo, categoria: categoriaNova });
+                            console.log("Produto cadastrado com sucesso!");
+                            break;
+                        }
+                        case 2: {
+                            const idAtualizar = obterNumero("Digite o ID do produto a atualizar", false);
+                            const todosProdutos = (0, produtoService_1.listarProdutos)();
+                            const prodAtualizar = todosProdutos.find(p => p.id === idAtualizar);
+                            if (!prodAtualizar) {
+                                console.log("Produto não encontrado!");
+                                break;
+                            }
+                            const novoNome = obterString(`Nome atual: ${prodAtualizar.nome}. Novo nome:`);
+                            const novoPreco = obterNumero(`Preço atual: R$${prodAtualizar.preco}. Novo preço:`, false);
+                            const novaCategoria = obterString(`Categoria atual: ${prodAtualizar.categoria}. Nova categoria:`, v => ["pizza", "bebida", "sobremesa"].includes(v.toLowerCase()), "Categoria inválida");
+                            if ((0, produtoService_1.atualizarProduto)({ id: prodAtualizar.id, nome: novoNome, preco: novoPreco, categoria: novaCategoria })) {
+                                console.log("Produto atualizado com sucesso!");
+                            }
+                            else {
+                                console.log("Erro ao atualizar produto.");
+                            }
+                            break;
+                        }
+                        case 3: {
+                            const idExcluir = obterNumero("Digite o ID do produto a excluir", false);
+                            if ((0, produtoService_1.excluirProdutoPorId)(idExcluir)) {
+                                console.log("Produto excluído com sucesso!");
+                            }
+                            else {
+                                console.log("Produto não encontrado!");
+                            }
+                            break;
+                        }
+                        case 4: {
+                            const todosProdutos = (0, produtoService_1.listarProdutos)();
+                            console.log("\n--- PRODUTOS CADASTRADOS ---");
+                            todosProdutos.forEach(p => console.log(`${p.id} - ${p.nome} - R$${p.preco.toFixed(2)} - ${p.categoria}`));
+                            break;
+                        }
+                        case 0:
+                            break;
+                        default:
+                            console.log("Opção inválida!");
+                            break;
+                    }
+                    if (opCardapio === 0)
+                        break;
+                }
                 break;
             case 0:
                 console.log("Saindo do sistema...");
