@@ -38,7 +38,7 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 ## ⚙️ Recursos // ainda arrumar
 
 * **Entrada**: Nome Completo, CPF, Telefone, Endereço, Sabores de Pizza, Bebidas, Modo de entrega, Forma de Pagamento.
-* **Armazenamento**: `csv/entradas.csv`, `csv/pedidos.csv`, `csv/saidas.csv` + `csv/resumo_diario.txt`. // não entendi essa parte, validar quem estiver fazendo código
+* **Armazenamento**: `csv/entradas.csv`, `csv/pedidos.csv`
 * **Saída**: Preço, Quantidade, Produtos escolhidos. 
 * **Consulta por CPF**: Verifica histórico de pedidos realizados com esse CPF. 
 * **Consulta Pizza Mais Pedida**: Verifica qual sabor de pizza saiu mais no dia/mês/ano.
@@ -167,7 +167,7 @@ npm run build && npm start
 
 1. **Entrada** → informe **Nome completo**, **CPF**, **Telefone**, **Pizzas**, **Bebidas**, **Modo de Entrega**, **Forma de Pagamento** e **Endereço**. O sistema grava em `cadastro.csv`.
 2. **Saída** → O Sistema calcula o preço dos produtos escolhidos e cria a nota fiscal do pedido. O sistema grava em `pedidos.csv`.
-3. **Consulta por CPF** → Procura o histórico de pedidos pelo **CPF** inserido e dretorna todos os produtos e valores dos pedidos anteriores feitos por esse cliente.
+3. **Consulta por CPF** → Procura o histórico de pedidos pelo **CPF** inserido e retorna todos os produtos e valores dos pedidos anteriores feitos por esse cliente.
 4. **Consulta Pizza Mais Pedida** → Inserir um **dia/mês/ano** e o sistema devolverá as pizzas mais pedidas nesse período.
 5. **Relatório de Vendas por Pizza** → Insira um **dia/mês/ano** e o sistema mostrará o total vendido de cada sabor de pizza nesse período, incluindo o número de unidades e valor total.
 6. **Consulta de Produtos e Preços** → O sistema consulta o cardápio e retorna uma lista de pizzas, bebidas e seus respectivos preços.
@@ -177,10 +177,10 @@ npm run build && npm start
 ## 🗃️ Campos e formatos //ainda arrumar
 
 * **Datas**: ISO (ex.: `2025-08-19T18:40:02.123Z`).
-* **Placa**: armazenada em **maiúsculas**.
-* **valorHora**: número decimal (ex.: `12.5`).
-* **horas**: inteiro ≥ 1 (arredondado para cima a partir da diferença de horários).
-* **preco**: `horas × valorHora` com 2 casas decimais.
+* **CPF**: somente números. 
+* **Telefone**: somente números. 
+* **Valor**: número decimal (ex.: `12.5`).
+* **Pedido**: `quantidadePedido × valorProduto` com 2 casas decimais.
 
 <br>
 
