@@ -60,7 +60,7 @@ function escolherItem(cardapio: CardapioItem[]): PedidoItem | null {
 function mostrarMenuPrincipal(): void {
   console.log("\n===== PIZZARIA PARMA =====");
   console.log("1 - Cadastrar/Login");
-  console.log("2 - Pedido");
+  console.log("2 - Fazer pedido");
   console.log("3 - Meu Histórico de Compras");
   console.log("4 - Pizza Mais Pedida");
   console.log("0 - Sair");
@@ -161,7 +161,7 @@ function main(): void {
           console.log("4 - Finalizar Pedido");
           console.log("0 - Voltar ao menu principal");
 
-          const opPedido = obterNumero("Escolha uma opção");
+          const opPedido = obterNumero("Escolha uma opcao");
           let item: PedidoItem | null = null;
 
           if (opPedido === 1) item = escolherItem(pizzas);
@@ -179,9 +179,9 @@ function main(): void {
               continue;
             }
 
-            const observacao = confirmarPergunta("Deseja adicionar alguma observação?") ? obterString("Digite sua observação") : "";
-            const enderecoConfirmado = confirmarPergunta(`Deseja confirmar o endereço atual? ${clienteAtual.endereco}`) ? clienteAtual.endereco : obterString("Digite seu endereço de entrega");
-            const pagamento = obterString("Digite a forma de pagamento (Dinheiro / Cartão / Pix)");
+            const observacao = confirmarPergunta("Deseja adicionar alguma observacao?") ? obterString("Digite sua observacao") : "";
+            const enderecoConfirmado = confirmarPergunta(`Deseja confirmar o endereco atual? ${clienteAtual.endereco}`) ? clienteAtual.endereco : obterString("Digite seu endereco de entrega");
+            const pagamento = obterString("Digite a forma de pagamento (Dinheiro / Cartao / Pix)");
 
             const total = calcularTotalPedido(carrinho);
             criarPedido(clienteAtual, carrinho, total, pagamento, enderecoConfirmado, observacao);

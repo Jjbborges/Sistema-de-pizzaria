@@ -6,7 +6,7 @@ export function obterString(prompt: string): string {
   do {
     resposta = readlineSync.question(`${prompt}: `).trim();
     if (!resposta) {
-      console.log("Entrada inválida. Por favor, preencha o campo.");
+      console.log("Entrada invalida. Por favor, preencha o campo.");
     }
   } while (!resposta);
   return resposta;
@@ -18,7 +18,7 @@ export function obterNumero(prompt: string): number {
   do {
     numero = readlineSync.questionInt(`${prompt}: `);
     if (numero < 0) {
-      console.log("Por favor, insira um número válido.");
+      console.log("Por favor, insira um número valido.");
     }
   } while (numero < 0);
   return numero;
