@@ -32,7 +32,7 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 
 <br>
 
-# ⌨ Autores
+## ⌨ Autores
 
 ```
 - Gabriele Larena
