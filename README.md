@@ -174,7 +174,7 @@ npm run build && npm start
 
 <br>
 
-## 🗃️ Campos e formatos //ainda arrumar
+## 🗃️ Campos e formatos 
 
 * **Datas**: ISO (ex.: `2025-08-19T18:40:02.123Z`).
 * **Nome**: Deve conter apenas letras (sem números) e não pode ser vazio.
