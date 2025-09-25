@@ -72,6 +72,37 @@ Back-End/
 
 <br>
 
+## 🖥️ Uso // ainda arrumar
+
+1. **Entrada** → informe **Nome completo**, **CPF**, **Telefone**, **Pizzas**, **Bebidas**, **Modo de Entrega**, **Forma de Pagamento** e **Endereço**. O sistema grava em `cadastro.csv`.
+3. **Saída** → O Sistema calcula o preço dos produtos escolhidos e cria a nota fiscal do pedido. O sistema grava em `pedidos.csv`.
+4. **Consulta por placa** → primeiro busca em `ativos.csv`; se não encontrar, mostra a **última saída** de `saidas.csv`.
+5. **Listar ativos** → imprime no console todos os veículos atualmente no pátio.
+6. **Consulta por CPF** → Procura o histórico de pedidos pelo **CPF** inserido e devolve os valores e produtos escolhidos nas compras anteriores.
+7. **Consulta Pizza Mais Pedida** → Inserir um **dia/mês/ano**, que ao ser executado, o sistema devolverá os produtos mais pedidos em tal data.
+
+<br>
+
+## ⚙️ Recursos // ainda arrumar
+
+* **Entrada**: Nome Completo, CPF, Telefone, Endereço, Sabores de Pizza, Bebidas, Modo de entrega, Forma de Pagamento.
+* **Armazenamento**: `csv/entradas.csv`, `csv/pedidos.csv`, `csv/saidas.csv` + `csv/resumo_diario.txt`. // não entendi essa parte, validar quem estiver fazendo código
+* **Saída**: Preço, Quantidade, Produtos escolhidos. 
+* **Consulta por CPF**: Verifica histórico de pedidos realizados com esse CPF. 
+* **Consulta Pizza Mais Pedida**: Verifica qual sabor de pizza saiu mais no dia/mês/ano.
+
+<br>
+
+## 🗃️ Campos e formatos //ainda arrumar
+
+* **Datas**: ISO (ex.: `2025-08-19T18:40:02.123Z`).
+* **Placa**: armazenada em **maiúsculas**.
+* **valorHora**: número decimal (ex.: `12.5`).
+* **horas**: inteiro ≥ 1 (arredondado para cima a partir da diferença de horários).
+* **preco**: `horas × valorHora` com 2 casas decimais.
+
+<br>
+
 ## 🚀 Instalação
 
 Na **raiz** do projeto (onde está o `package.json`):
@@ -178,34 +209,3 @@ rm -f csv/*.csv
 ```
 
 *(No Windows, apague manualmente ou use `del` no PowerShell.)*
-
-
-
-## 🖥️ Uso // ainda arrumar
-
-1. **Entrada** → informe **Nome completo**, **CPF**, **Telefone**, **Pizzas**, **Bebidas**, **Modo de Entrega**, **Forma de Pagamento** e **Endereço**. O sistema grava em `cadastro.csv`.
-3. **Saída** → O Sistema calcula o preço dos produtos escolhidos e cria a nota fiscal do pedido. O sistema grava em `pedidos.csv`.
-4. **Consulta por placa** → primeiro busca em `ativos.csv`; se não encontrar, mostra a **última saída** de `saidas.csv`.
-5. **Listar ativos** → imprime no console todos os veículos atualmente no pátio.
-6. **Consulta por CPF** → Procura o histórico de pedidos pelo **CPF** inserido e devolve os valores e produtos escolhidos nas compras anteriores.
-7. **Consulta Pizza Mais Pedida** → Inserir um **dia/mês/ano**, que ao ser executado, o sistema devolverá os produtos mais pedidos em tal data.
-
-## ⚙️ Recursos // ainda arrumar
-
-* **Entrada**: Nome Completo, CPF, Telefone, Endereço, Sabores de Pizza, Bebidas, Modo de entrega, Forma de Pagamento.
-* **Armazenamento**: `csv/entradas.csv`, `csv/pedidos.csv`, `csv/saidas.csv` + `csv/resumo_diario.txt`. // não entendi essa parte, validar quem estiver fazendo código
-* **Saída**: Preço, Quantidade, Produtos escolhidos. 
-* **Consulta por CPF**: Verifica histórico de pedidos realizados com esse CPF. 
-* **Consulta Pizza Mais Pedida**: Verifica qual sabor de pizza saiu mais no dia/mês/ano.
-
-
-## 🗃️ Campos e formatos
-
-* **Datas**: ISO (ex.: `2025-08-19T18:40:02.123Z`).
-* **Placa**: armazenada em **maiúsculas**.
-* **valorHora**: número decimal (ex.: `12.5`).
-* **horas**: inteiro ≥ 1 (arredondado para cima a partir da diferença de horários).
-* **preco**: `horas × valorHora` com 2 casas decimais.
-
----
-
