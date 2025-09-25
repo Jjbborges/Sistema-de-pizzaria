@@ -1,34 +1,28 @@
 import * as fs from "fs";
 import * as path from "path";
 import { Produto } from "../models/produto";
+import { salvarCSV, carregarCSV } from "..utils/fileUtils.ts";
 
-const caminhoArquivo = path.join(__dirname, "../../csv/produtos.csv");
+const caminhoArquivo = "src/csv/produtos.csv";
 
 export function carregarProdutos(): Produto[] {
-  if (!fs.existsSync(caminhoArquivo)) return [];
-
-  const linhas = fs.readFileSync(caminhoArquivo, "utf-8")
-    .split("\n")
-    .filter(Boolean);
-
-  return linhas.map((linha: string): Produto => {
-    // Forçando que o split sempre retorne string
-    const [id, nome, preco, categoria] = linha.split(",") as [string, string, string, string];
-
+  const linhas = carregarCSV(caminhoArquivo);
+  return linhas.map((linha: { split: (arg0: string) => [any, any, any, any]; }) => {
+    const [id, nome, preco, categoria] = linha.split(",");
     return {
       id: Number(id),
-      nome,
+      nome: nome || "",
       preco: Number(preco),
-      categoria: categoria as Produto["categoria"],
+      categoria: categoria as Produto["categoria"]
     };
   });
 }
 
 export function salvarProdutos(produtos: Produto[]): void {
-  const conteudo = produtos
-    .map(p => `${p.id},${p.nome},${p.preco},${p.categoria}`)
-    .join("\n");
-  fs.writeFileSync(caminhoArquivo, conteudo, "utf-8");
+  const conteudo = produtos.map(p =>
+    `${p.id},${p.nome},${p.preco},${p.categoria}`
+  );
+  salvarCSV(caminhoArquivo, conteudo);
 }
 
 export function cadastrarProduto(produto: Produto): Produto {

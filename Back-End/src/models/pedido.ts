@@ -1,29 +1,14 @@
-export interface CardapioItem {
-  id: number;
-  nome: string;
-  preco: number;
-}
-
-export interface PedidoItem {
-  item: CardapioItem;
-  quantidade: number;
-}
+import { Produto } from "./produto";
+import { Cliente } from "./cliente";
 
 export interface Pedido {
-  id: number; // obrigatório
-  data: string;
-  itens: PedidoItem[];
+  endereco: any;
+  id: number;
+  cliente: Cliente;
+  itens: Produto[];
   total: number;
   pagamento: string;
-  endereco: string;
-  observacao: string;
-}
-
-export interface Cliente {
-  id: number;
-  nome: string;
-  cpf: string;
-  telefone: string;
-  endereco: string;
-  historicoPedidos: Pedido[];
+  enderecoEntrega: string;
+  observacao?: string;
+  data: string; // formato: YYYY-MM-DD
 }

@@ -1,51 +1,49 @@
-import { Cliente } from "../models/pedido";
-import { lerCSV, salvarCSV } from "../utils/fileUtils";
+// src/services/cadastroService.ts
+import { salvarCSV, carregarCSV } from "../utils/fileUtils";
+import { Cliente } from "../models/cliente";
 
-const CAMINHO_CLIENTES = "csv/cadastro.csv";
+const caminhoArquivo = "src/csv/cadastro.csv";
 
+// --- Cadastrar um cliente ---
 export function cadastrarCliente(cliente: Cliente): Cliente {
-  const clientes = listarClientes();
+  const clientes = carregarClientes();
   clientes.push(cliente);
-  salvarCSV(CAMINHO_CLIENTES, clientes.map(c => [
-    c.id.toString(),
-    c.nome,
-    c.cpf,
-    c.telefone,
-    c.endereco,
-    JSON.stringify(c.historicoPedidos)
-  ]));
+  salvarClientes(clientes);
   return cliente;
 }
 
-export function listarClientes(): Cliente[] {
-  const linhas = lerCSV(CAMINHO_CLIENTES);
-  return linhas.map(linha => ({
-    id: Number(linha[0]),
-    nome: linha[1] || "",
-    cpf: linha[2] || "",
-    telefone: linha[3] || "",
-    endereco: linha[4] || "",
-    historicoPedidos: linha[5] ? JSON.parse(linha[5]) : []
-  }));
+// --- Carregar todos os clientes ---
+export function carregarClientes(): Cliente[] {
+  const linhas = carregarCSV(caminhoArquivo);
+
+  return linhas.map((linha: { split: (arg0: string) => [any, any, any, any, any]; }) => {
+    const [idStr, nome, cpf, telefone, endereco] = linha.split(",");
+
+    return {
+      id: Number(idStr),
+      nome: nome || "",
+      cpf: cpf || "",
+      telefone: telefone || "",
+      endereco: endereco || "",
+      historicoPedidos: []
+    };
+  });
 }
 
+// --- Salvar todos os clientes ---
+export function salvarClientes(clientes: Cliente[]): void {
+  const conteudo = clientes.map(c =>
+    `${c.id},${c.nome},${c.cpf},${c.telefone},${c.endereco}`
+  );
+  salvarCSV(caminhoArquivo, conteudo);
+}
+
+// --- Buscar cliente pelo CPF ---
 export function buscarClientePorCPF(cpf: string): Cliente | undefined {
-  const clientes = listarClientes();
-  return clientes.find(c => c.cpf === cpf);
+  return carregarClientes().find(c => c.cpf === cpf);
 }
 
-export function atualizarCliente(cliente: Cliente) {
-  const clientes = listarClientes();
-  const index = clientes.findIndex(c => c.cpf === cliente.cpf);
-  if (index !== -1) {
-    clientes[index] = cliente;
-    salvarCSV(CAMINHO_CLIENTES, clientes.map(c => [
-      c.id.toString(),
-      c.nome,
-      c.cpf,
-      c.telefone,
-      c.endereco,
-      JSON.stringify(c.historicoPedidos)
-    ]));
-  }
+// --- Listar todos os clientes ---
+export function listarClientes(): Cliente[] {
+  return carregarClientes();
 }
