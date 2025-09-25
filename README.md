@@ -32,7 +32,7 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 
 <br>
 
-### Arquivos CSV gerados
+### 🗃 Arquivos CSV gerados
 
 * `csv/cadastro.csv`  → `id, nome, cpf, telefone, endereco, historicoPedidos`
 * `csv/pedidos.csv`   → `cliente.nome, cliente.cpf, cliente.telefone, cliente.endereco, pedido.id, pedido.data, item.nome, item.quantidade, item.preco, pedido.total`
@@ -42,7 +42,7 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 
 * **Node.js 16+** (recomendado 18 ou 20)
 * **npm**
-* Biblioteca readlyne-sinc
+* **Biblioteca readline-sync**
 
 ---
 
