@@ -116,19 +116,11 @@ No tsconfig.json, garanta que tenha algo assim:
 
 ## ▶️ Como executar
 
-Modo desenvolvimento (executa direto o TypeScript):
-
-```bash
-npm run dev
-```
-
 Transpilar e rodar o JS gerado:
 
 ```bash
 npm tsc && node dist/inicio.js
 ```
-
-<br>
 
 ### ⚡ Scripts
 
