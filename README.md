@@ -1,7 +1,7 @@
 <div align="center">
 
   <img src="./pizza.png" alt="Logo" height="200">
-  <h1 align="center"><strong>SISTEMA DA PIZZARIA (nome)</strong></h1>
+  <h1 align="center"><strong>SISTEMA DA PIZZARIA PARMA</strong></h1>
   <p align="center">
 	 Este é um projeto completo de um site de pizzaria desenvolvido em TypeScript + Node.js. <br> Aplicativo criado para gerenciar Entrada, Armazenamento, Saída e Consulta pelos dados do pedido.
   </p>
@@ -22,6 +22,13 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 
 - package.json - Gerencia as dependências e scripts do projeto.
 - tsconfig.json - Configurações do TypeScript.
+- inicio.ts - Código de base e menu.
+- cardapio.ts - Armazena os itens do Cardápio.
+- pedido.ts - Definição de tipos para a estruturação de dados.
+- cadastroService.ts - Cadastro de novos clientes
+- pedidoService.ts - Base do serviço de pedidos.
+- fileUtils.ts - Utilitário de leitura e escrita em CSV.
+- inputUtils.ts - Utilitário de entrada de dados pelo terminal.
 
 <br>
 
