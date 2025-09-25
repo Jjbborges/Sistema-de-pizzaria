@@ -31,6 +31,7 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 - pedidoService.ts - Base do serviço de pedidos.
 - fileUtils.ts - Utilitário de leitura e escrita em CSV.
 - inputUtils.ts - Utilitário de entrada de dados pelo terminal.
+- validacoes.ts -  Valida as informações inseridas. 
 
 <br>
 
