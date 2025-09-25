@@ -177,10 +177,12 @@ npm run build && npm start
 ## 🗃️ Campos e formatos //ainda arrumar
 
 * **Datas**: ISO (ex.: `2025-08-19T18:40:02.123Z`).
-* **CPF**: somente números. 
-* **Telefone**: somente números. 
-* **Valor**: número decimal (ex.: `12.5`).
-* **Pedido**: `quantidadePedido × valorProduto` com 2 casas decimais.
+* **Nome**: Deve conter apenas letras (sem números) e não pode ser vazio.
+* **CPF**: Deve conter exclusivamente números, com exatamente 11 dígitos.
+* **Telefone**: Deve conter exclusivamente números, com no mínimo 10 dígitos.
+* **Valor**: Deve ser um número decimal válido (exemplo: 12.5).
+* **Endereço**: Campo obrigatório, não podendo estar vazio.
+* **Pedido**: O valor do pedido deve ser calculado pela expressão `p.item.preco × p.quantidade`, com resultado formatado em 2 casas decimais.
 
 <br>
 
