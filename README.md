@@ -49,6 +49,71 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 
 <br>
 
+## 🚀 Instalação
+
+Na **raiz** do projeto (onde está o `package.json`):
+
+```bash
+npm i -D typescript ts-node @types/node
+```
+
+Crie (ou confira) os scripts no **package.json**:
+
+```json
+{
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts"
+  }
+}
+```
+
+`tsconfig.json` mínimo recomendado:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "lib": ["ES2020"]
+  },
+  "include": ["src/**/*"]
+}
+```
+
+Após isso, instale a biblioteca readline-sync:
+
+```bash
+npm install readline-sync
+```
+
+No tsconfig.json, garanta que tenha algo assim:
+
+``` bash
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "strict": true,
+    "esModuleInterop": true,
+    "outDir": "./dist"
+  },
+  "include": ["./src"]
+}
+```
+
+> No VS Code, se aparecerem erros de tipos do Node, use **Ctrl+Shift+P → TypeScript: Restart TS Server**.
+
+<br>
+
 ## ⌨ Autores
 
 ```
@@ -122,51 +187,6 @@ npm run build && npm start
 ```
 
 <br />
-
-### Arquivos CSV gerados // ainda 
-## 🚀 Instalação
-
-Na **raiz** do projeto (onde está o `package.json`):
-
-```bash
-npm i -D typescript ts-node @types/node
-```
-
-Crie (ou confira) os scripts no **package.json**:
-
-```json
-{
-  "scripts": {
-    "build": "tsc",
-    "start": "node js/index.js",
-    "dev": "ts-node ts/index.ts"
-  }
-}
-```
-
-`tsconfig.json` mínimo recomendado:
-
-```json
-{
-  "compilerOptions": {
-    "target": "ES2020",
-    "module": "CommonJS",
-    "moduleResolution": "node",
-    "rootDir": "./ts",
-    "outDir": "./js",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "types": ["node"],
-    "lib": ["ES2020"]
-  },
-  "include": ["ts/**/*"]
-}
-```
-
-> No VS Code, se aparecerem erros de tipos do Node, use **Ctrl+Shift+P → TypeScript: Restart TS Server**.
-
----
 
 ## 🗃️ Campos e formatos
 
