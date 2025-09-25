@@ -1,5 +1,0 @@
-- Metodos de pagamento (dinheiro, pix, cartão, se precisa de troco)
-- Pizza mais pedida por mês, sabor mais pedido
-- Add observações de pedido
-- Promoção
-- Confirmar o local e emitir recibo de compra

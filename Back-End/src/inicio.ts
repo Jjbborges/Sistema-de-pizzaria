@@ -1,7 +1,9 @@
+//É o inicio de todo o projeto, o código fonte
+//Logo abaixo são o import das outras pastas que estão separadas para cada coisa 
 import readlineSync = require("readline-sync");
 import { cadastrarCliente } from "./services/cadastroService";
 import { criarPedido, calcularTotalPedido } from "./services/pedidoService";
-import type { Cliente, PedidoItem, CardapioItem } from "./models/pedido";
+import { Cliente, PedidoItem, CardapioItem } from "./models/pedido";
 import { pizzas, bebidas, sobremesas } from "./data/cardapio";
 
 // --- Funções de entrada ---
@@ -12,35 +14,7 @@ function obterString(prompt: string): string {
 function obterNumero(prompt: string): number {
   return readlineSync.questionInt(`\n${prompt}: `);
 }
-
-// --- Função para escolher item do cardápio ---
-function escolherItem(cardapio: CardapioItem[]): PedidoItem | null {
-  console.log("\n--- CARDÁPIO ---");
-  cardapio.forEach((item) =>
-    console.log(`${item.id} - ${item.nome} - R$${item.preco.toFixed(2)}`)
-  );
-
-  const idStr = obterString("Digite o ID do produto que deseja");
-  const id = Number(idStr);
-
-  if (isNaN(id)) {
-    console.log("❌ ID inválido!");
-    return null;
-  }
-
-  const itemEscolhido = cardapio.find((item) => item.id === id);
-  if (!itemEscolhido) {
-    console.log("❌ Produto não encontrado!");
-    return null;
-  }
-
-  const quantidade = obterNumero("Digite a quantidade desejada");
-
-  return {
-    item: itemEscolhido,
-    quantidade,
-  };
-}
+//MARK: Função MENU
 
 // --- Estado da aplicação ---
 let clienteAtual: Cliente | undefined;
@@ -49,7 +23,7 @@ let carrinho: PedidoItem[] = [];
 // --- Menu principal ---
 function mostrarMenuPrincipal(): void {
   console.log("\n===== PIZZARIA MIMI =====");
-  console.log("1 - Cadastrar/Login Cliente");
+  console.log("1 - Cadastrar");
   console.log("2 - Pedir");
   console.log("3 - Meu Histórico de Compras");
   console.log("5 - Pizza Mais Pedida");
@@ -68,8 +42,9 @@ function main(): void {
     mostrarMenuPrincipal();
     const opcao = obterNumero("Escolha uma opção");
 
+
+  // MARK: Cadastro
     switch (opcao) {
-      // --- Cadastro/Login Cliente ---
       case 1:
         const nome = obterString("Digite seu nome completo");
         const cpf = obterString("Digite seu CPF");
@@ -86,13 +61,42 @@ function main(): void {
           historicoPedidos: []
         };
         cadastrarCliente(clienteAtual);
-        console.log(`✅ Cliente ${nome} cadastrado com sucesso!`);
+        console.log(`Cliente ${nome} cadastrado com sucesso!`);
         break;
 
-      // --- Pedir ---
+//MARK: Cardápio
+function escolherItem(cardapio: CardapioItem[]): PedidoItem | null {
+  console.log("\n--- CARDÁPIO ---");
+  cardapio.forEach((item) =>
+    console.log(`${item.id} - ${item.nome} - R$${item.preco.toFixed(2)}`)
+  );
+
+  const idStr = obterString("Digite o ID do produto que deseja");
+  const id = Number(idStr);
+
+  if (isNaN(id)) {
+    console.log("ID inválido!");
+    return null;
+  }
+
+  const itemEscolhido = cardapio.find((item) => item.id === id);
+  if (!itemEscolhido) {
+    console.log("Produto não encontrado!");
+    return null;
+  }
+
+  const quantidade = obterNumero("Digite a quantidade desejada");
+
+  return {
+    item: itemEscolhido,
+    quantidade,
+  };
+}
+
+      //MARK: Pedir
       case 2:
         if (!clienteAtual) {
-          console.log("❌ Faça login ou cadastre-se antes de criar um pedido.");
+          console.log("Cadastre-se antes de criar um pedido.");
           break;
         }
 
@@ -113,17 +117,17 @@ function main(): void {
 
           if (item) {
             carrinho.push(item);
-            console.log(`✅ ${item.quantidade}x ${item.item.nome} adicionado(s) ao carrinho!`);
+            console.log(` ${item.quantidade}x ${item.item.nome} adicionado(s) ao carrinho!`);
           }
 
           if (opPedido === 4) {
             if (carrinho.length === 0) {
-              console.log("❌ Carrinho vazio!");
+              console.log("Carrinho vazio!");
               continue;
             }
             const total = calcularTotalPedido(carrinho);
             criarPedido(clienteAtual, carrinho, total);
-            console.log(`🎉 Pedido finalizado! Total: R$ ${total.toFixed(2)}`);
+            console.log(`Pedido finalizado! Total: R$ ${total.toFixed(2)}`);
             carrinho = [];
             break;
           }
@@ -132,19 +136,19 @@ function main(): void {
         }
         break;
 
-      // --- Histórico de Compras ---
+      //MARK: Histórico
       case 3:
         if (!clienteAtual) {
-          console.log("❌ Faça login para consultar o histórico.");
+          console.log("Faça login para consultar o histórico.");
           break;
         }
       // --- Sair ---
       case 0:
-        console.log("👋 Saindo do sistema...");
+        console.log("Saindo do sistema...");
         process.exit(0);
 
       default:
-        console.log("❌ Opção inválida!");
+        console.log("Opção inválida!");
         break;
     }
   }

@@ -1,5 +1,6 @@
 import type { Cliente } from "../models/pedido";
 import { obterString } from "../utils/inputUtils";
+const CAMINHO_CSV_PEDIDOS = "csv/cadastro.csv";
 
 let proximoId = 1; // contador global de clientes
 
@@ -19,6 +20,6 @@ export function cadastrarCliente(clienteAtual: Cliente): Cliente {
   };
 
   console.log(`✅ Cliente ${novoCliente.nome} cadastrado com sucesso!`);
-const CAMINHO_CSV_PEDIDOS = "csv/cadastro.csv";
+
   return novoCliente;
 }

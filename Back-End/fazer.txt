@@ -1,0 +1,6 @@
+- Metodos de pagamento (dinheiro, pix, cartão, se precisa de troco) - Finalização de pedido, também faz parte de uma função no código fonte
+- Pizza mais pedida por mês, sabor mais pedido - Tentar o CSV
+- Add observações de pedido - Fonte
+- Promoção - Criar função no código fonte
+- Confirmar o local e emitir recibo de compra - Deixar no código fonte
+- Corrigir CSV de cadastro.csv (Não está aparecendo os cadastros de novos perfis somente o pedido)
