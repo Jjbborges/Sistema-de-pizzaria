@@ -32,6 +32,21 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 
 <br>
 
+### Arquivos CSV gerados
+
+* `csv/cadastro.csv`  → `id, nome, cpf, telefone, endereco, historicoPedidos`
+* `csv/pedidos.csv`   → `cliente.nome, cliente.cpf, cliente.telefone, cliente.endereco, pedido.id, pedido.data, item.nome, item.quantidade, item.preco, pedido.total`
+
+
+## 🔧 Pré-requisitos
+
+* **Node.js 16+** (recomendado 18 ou 20)
+* **npm**
+* Biblioteca readlyne-sinc
+
+---
+
+
 ## ⌨ Autores
 
 ```
@@ -106,19 +121,7 @@ npm run build && npm start
 
 <br />
 
-### Arquivos CSV gerados // ainda arrumar
-
-* `csv/cadastro.csv`  → `id, nome, cpf, telefone, endereco, historicoPedidos`
-* `csv/pedidos.csv`   → `cliente.nome, cliente.cpf, cliente.telefone, cliente.endereco, pedido.id, pedido.data, item.nome, item.quantidade, item.preco, pedido.total`
-
-
-## 🔧 Pré-requisitos
-
-* **Node.js 16+** (recomendado 18 ou 20)
-* **npm**
-
----
-
+### Arquivos CSV gerados // ainda 
 ## 🚀 Instalação
 
 Na **raiz** do projeto (onde está o `package.json`):
