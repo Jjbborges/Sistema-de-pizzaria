@@ -35,13 +35,16 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 
 <br>
 
-## ⚙️ Recursos // ainda arrumar
+## ⚙️ Recursos 
 
 * **Entrada**: Nome Completo, CPF, Telefone, Endereço, Sabores de Pizza, Bebidas, Modo de entrega, Forma de Pagamento.
 * **Armazenamento**: `csv/entradas.csv`, `csv/pedidos.csv`
 * **Saída**: Preço, Quantidade, Produtos escolhidos. 
 * **Consulta por CPF**: Verifica histórico de pedidos realizados com esse CPF. 
 * **Consulta Pizza Mais Pedida**: Verifica qual sabor de pizza saiu mais no dia/mês/ano.
+* **Cadastro de Clientes**: Registra, altera, consulta e exclui clientes.
+* **Cadastro de Produtos**: Gerencia produtos.
+* **Emissão de Comprovante**: Gerar comprovante de compra para cada pedido.
 
 <br>
 
@@ -163,14 +166,15 @@ npm run build && npm start
 ```
 
 
-## 🖥️ Uso // ainda arrumar
+## 🖥️ Uso 
 
 1. **Entrada** → informe **Nome completo**, **CPF**, **Telefone**, **Pizzas**, **Bebidas**, **Modo de Entrega**, **Forma de Pagamento** e **Endereço**. O sistema grava em `cadastro.csv`.
 2. **Saída** → O Sistema calcula o preço dos produtos escolhidos e cria a nota fiscal do pedido. O sistema grava em `pedidos.csv`.
 3. **Consulta por CPF** → Procura o histórico de pedidos pelo **CPF** inserido e retorna todos os produtos e valores dos pedidos anteriores feitos por esse cliente.
-4. **Consulta Pizza Mais Pedida** → Inserir um **dia/mês/ano** e o sistema devolverá as pizzas mais pedidas nesse período.
-5. **Relatório de Vendas por Pizza** → Insira um **dia/mês/ano** e o sistema mostrará o total vendido de cada sabor de pizza nesse período, incluindo o número de unidades e valor total.
-6. **Consulta de Produtos e Preços** → O sistema consulta o cardápio e retorna uma lista de pizzas, bebidas e seus respectivos preços.
+4. **Relatório de Vendas por Produto** → Insira um **dia/mês/ano** e o sistema mostrará o total vendido de cada produto nesse período, incluindo o número de unidades e valor total.
+* **Cadastro de Clientes**: Registra, altera, consulta e exclui clientes.
+* **Cadastro de Produtos**: Gerencia produtos.
+* **Emissão de Comprovante**: Gerar comprovante de compra para cada pedido.
 
 <br>
 
