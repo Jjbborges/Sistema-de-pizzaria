@@ -135,8 +135,6 @@ rm -f csv/*.csv
 
 *(No Windows, apague manualmente ou use `del` no PowerShell.)*
 
----
-
 
 
 ## 🖥️ Uso // ainda arrumar
