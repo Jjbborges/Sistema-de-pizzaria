@@ -5,7 +5,7 @@ exports.listarClientes = listarClientes;
 exports.buscarClientePorCPF = buscarClientePorCPF;
 exports.atualizarCliente = atualizarCliente;
 const fileUtils_1 = require("../utils/fileUtils");
-const CAMINHO_CLIENTES = "./csv/cadastro.csv";
+const CAMINHO_CLIENTES = "csv/cadastro.csv";
 function cadastrarCliente(cliente) {
     const clientes = listarClientes();
     clientes.push(cliente);

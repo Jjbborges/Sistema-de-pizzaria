@@ -1,7 +1,7 @@
 import { Cliente } from "../models/pedido";
 import { lerCSV, salvarCSV } from "../utils/fileUtils";
 
-const CAMINHO_CLIENTES = "./csv/cadastro.csv";
+const CAMINHO_CLIENTES = "csv/cadastro.csv";
 
 export function cadastrarCliente(cliente: Cliente): Cliente {
   const clientes = listarClientes();

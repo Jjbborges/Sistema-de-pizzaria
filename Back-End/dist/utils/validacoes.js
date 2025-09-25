@@ -12,7 +12,7 @@ function obterNome(prompt) {
     do {
         nome = readlineSync.question(`${prompt}: `).trim();
         if (!nome || /\d/.test(nome)) {
-            console.log("❌ Nome inválido. Não use números e não deixe vazio.");
+            console.log("Nome inválido. Não use números e não deixe vazio.");
             nome = "";
         }
     } while (!nome);
@@ -24,7 +24,7 @@ function obterCPF(prompt) {
     do {
         cpf = readlineSync.question(`${prompt}: `).replace(/\D/g, "");
         if (cpf.length !== 11) {
-            console.log("❌ CPF inválido. Deve ter 11 números.");
+            console.log("CPF inválido. Deve ter 11 números.");
             cpf = "";
         }
     } while (!cpf);
@@ -36,7 +36,7 @@ function obterTelefone(prompt) {
     do {
         tel = readlineSync.question(`${prompt}: `).replace(/\D/g, "");
         if (tel.length < 10) {
-            console.log("❌ Telefone inválido. Digite pelo menos 10 números.");
+            console.log("Telefone inválido. Digite pelo menos 10 números.");
             tel = "";
         }
     } while (!tel);
@@ -48,7 +48,7 @@ function obterEndereco(prompt) {
     do {
         endereco = readlineSync.question(`${prompt}: `).trim();
         if (!endereco)
-            console.log("❌ Endereço não pode estar vazio.");
+            console.log("Endereço não pode estar vazio.");
     } while (!endereco);
     return endereco;
 }

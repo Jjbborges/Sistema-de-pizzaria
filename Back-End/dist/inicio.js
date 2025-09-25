@@ -4,7 +4,7 @@ const readlineSync = require("readline-sync");
 const cadastroService_1 = require("./services/cadastroService");
 const pedidoService_1 = require("./services/pedidoService");
 const cardapio_1 = require("./data/cardapio");
-// --- Funções de entrada e validação ---
+//Funções de entrada e validação
 function obterString(prompt, validar, erro) {
     let valor;
     do {
@@ -21,17 +21,17 @@ function obterNumero(prompt, permitirZero = true) {
     do {
         numero = readlineSync.questionInt(`${prompt}: `);
         if (!permitirZero && numero < 0)
-            console.log("❌ Por favor, insira um número positivo.");
+            console.log("Por favor, insira um número válido.");
     } while (!permitirZero && numero < 0);
     return numero;
 }
 function confirmarPergunta(prompt) {
     return readlineSync.keyInYNStrict(prompt);
 }
-// --- Estado da aplicação ---
+//Estado da aplicação
 let clienteAtual;
 let carrinho = [];
-// --- Escolher item do cardápio ---
+//MARK: cardápio
 function escolherItem(cardapio) {
     console.log("\n--- CARDÁPIO ---");
     cardapio.forEach((item) => console.log(`${item.id} - ${item.nome} - R$${item.preco.toFixed(2)}`));
@@ -49,11 +49,11 @@ function escolherItem(cardapio) {
     const quantidade = obterNumero("Digite a quantidade desejada", false);
     return { item: itemEscolhido, quantidade };
 }
-// --- Menu principal ---
+//MARK: Menu
 function mostrarMenuPrincipal() {
-    console.log("\n===== PIZZARIA Parma =====");
+    console.log("\n===== PIZZARIA PARMA =====");
     console.log("1 - Cadastrar/Login");
-    console.log("2 - Pedir");
+    console.log("2 - Pedido");
     console.log("3 - Meu Histórico de Compras");
     console.log("4 - Pizza Mais Pedida");
     console.log("0 - Sair");
@@ -62,7 +62,7 @@ function mostrarMenuPrincipal() {
     else
         console.log("\nNenhum cliente logado.");
 }
-// --- Função de recibo ---
+//MARK: recibo
 function gerarRecibo(cliente, itens, total, pagamento, endereco, observacao) {
     let recibo = "\n===== RECIBO PIZZARIA Parma =====\n";
     recibo += `Cliente: ${cliente.nome}\n`;
@@ -80,7 +80,7 @@ function gerarRecibo(cliente, itens, total, pagamento, endereco, observacao) {
     recibo += "================================\n";
     return recibo;
 }
-// --- Estatísticas de pizzas mais pedidas ---
+//MARK: CUIDADO
 function pizzaMaisPedida(cliente, periodo) {
     const contagem = {};
     const agora = new Date();
@@ -112,7 +112,7 @@ function pizzaMaisPedida(cliente, periodo) {
     const maisPedida = Object.entries(contagem).sort((a, b) => b[1] - a[1])[0];
     return maisPedida ? `${maisPedida[0]} (${maisPedida[1]}x)` : "Nenhuma pizza nesse período";
 }
-// --- Loop principal ---
+//MARK: Principal 
 function main() {
     while (true) {
         mostrarMenuPrincipal();
@@ -122,7 +122,7 @@ function main() {
                 const cpf = obterString("Digite seu CPF", (v) => /^\d{11}$/.test(v), "CPF deve ter 11 números.");
                 let cliente = (0, cadastroService_1.buscarClientePorCPF)(cpf);
                 if (cliente) {
-                    console.log(`👋 Bem-vindo de volta, ${cliente.nome}!`);
+                    console.log(`Bem-vindo de volta, ${cliente.nome}!`);
                     clienteAtual = cliente;
                 }
                 else {
@@ -131,12 +131,12 @@ function main() {
                     const endereco = obterString("Digite seu endereço");
                     const clienteId = Date.now();
                     clienteAtual = (0, cadastroService_1.cadastrarCliente)({ id: clienteId, nome, cpf, telefone, endereco, historicoPedidos: [] });
-                    console.log("✅ Cadastro realizado com sucesso!");
+                    console.log("Cadastro realizado com sucesso!");
                 }
                 break;
             case 2:
                 if (!clienteAtual) {
-                    console.log("❌ Faça login ou cadastre-se antes de criar um pedido.");
+                    console.log(" Faça login ou cadastre-se antes de criar um pedido.");
                     break;
                 }
                 while (true) {
@@ -156,11 +156,11 @@ function main() {
                         item = escolherItem(cardapio_1.sobremesas);
                     if (item) {
                         carrinho.push(item);
-                        console.log(`✅ ${item.quantidade}x ${item.item.nome} adicionado(s) ao carrinho!`);
+                        console.log(` ${item.quantidade}x ${item.item.nome} adicionado(s) ao carrinho!`);
                     }
                     if (opPedido === 4) {
                         if (carrinho.length === 0) {
-                            console.log("❌ Carrinho vazio!");
+                            console.log("Carrinho vazio!");
                             continue;
                         }
                         const observacao = confirmarPergunta("Deseja adicionar alguma observação?") ? obterString("Digite sua observação") : "";
@@ -178,7 +178,7 @@ function main() {
                 break;
             case 3:
                 if (!clienteAtual) {
-                    console.log("❌ Faça login para consultar o histórico.");
+                    console.log("Faça login para consultar o histórico.");
                     break;
                 }
                 console.log("\n--- Histórico de Compras ---");
@@ -186,7 +186,7 @@ function main() {
                 break;
             case 4:
                 if (!clienteAtual) {
-                    console.log("❌ Faça login primeiro.");
+                    console.log("Faça login primeiro.");
                     break;
                 }
                 console.log("\n--- Pizza Mais Pedida ---");
@@ -196,10 +196,10 @@ function main() {
                 console.log(`Anual: ${pizzaMaisPedida(clienteAtual, "anual")}`);
                 break;
             case 0:
-                console.log("👋 Saindo do sistema...");
+                console.log("Saindo do sistema...");
                 process.exit(0);
             default:
-                console.log("❌ Opção inválida!");
+                console.log("Opção inválida!");
                 break;
         }
     }

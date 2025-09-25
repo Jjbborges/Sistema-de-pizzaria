@@ -9,7 +9,7 @@ function obterString(prompt) {
     do {
         resposta = readlineSync.question(`${prompt}: `).trim();
         if (!resposta) {
-            console.log("❌ Entrada inválida. Por favor, preencha o campo.");
+            console.log("Entrada inválida. Por favor, preencha o campo.");
         }
     } while (!resposta);
     return resposta;
@@ -19,10 +19,10 @@ function obterNumero(prompt) {
     let numero;
     do {
         numero = readlineSync.questionInt(`${prompt}: `);
-        if (numero <= 0) {
-            console.log("❌ Por favor, insira um número positivo.");
+        if (numero < 0) {
+            console.log("Por favor, insira um número válido.");
         }
-    } while (numero <= 0);
+    } while (numero < 0);
     return numero;
 }
 //# sourceMappingURL=inputUtils.js.map
