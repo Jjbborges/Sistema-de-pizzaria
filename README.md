@@ -49,6 +49,29 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 
 <br>
 
+## 📁 Estrutura de pastas // ainda arrumar
+
+```
+Back-End/
+├─ dist/          # arquivos .js gerados pelo TypeScript
+    ├─ data # código do cardápio .js
+	├─ models # estruturação de dados .js
+	├─ services # base de cadastros .js
+	├─ utils # utilitários .js
+├─ src/           # código-fonte .ts (ex.: ts/index.ts)
+    ├─ data # código do cardápio .ts
+	├─ models # estruturação de dados .ts
+	├─ services # base de cadastros .ts
+	├─ utils # utilitários .js
+├─ csv/           # base de dados em CSV
+├─ node_modules/  # armazena as dependências externas
+├─ package.json
+├─ package-lock.json
+└─ tsconfig.json
+```
+
+<br>
+
 ## 🚀 Instalação
 
 Na **raiz** do projeto (onde está o `package.json`):
@@ -168,18 +191,6 @@ rm -f csv/*.csv
 * **Consulta por CPF**: Verifica histórico de pedidos realizados com esse CPF. 
 * **Consulta Pizza Mais Pedida**: Verifica qual sabor de pizza saiu mais no dia/mês/ano.
 
-
-## 📁 Estrutura de pastas // ainda arrumar
-
-```
-pizzaria/
-├─ dist/          # arquivos .js gerados pelo TypeScript
-├─ src/           # código-fonte .ts (ex.: ts/index.ts)
-├─ csv/           # base de dados em CSV
-├─ node_modules/  # armazena as dependências externas
-├─ package.json
-└─ tsconfig.json
-```
 
 ## 🗃️ Campos e formatos
 
