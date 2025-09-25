@@ -18,6 +18,8 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 
 </div>
 
+<br> 
+
 ### 📄 Arquivos 
 
 - package.json - Gerencia as dependências e scripts do projeto.
@@ -37,6 +39,7 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 * `csv/cadastro.csv`  → `id, nome, cpf, telefone, endereco, historicoPedidos`
 * `csv/pedidos.csv`   → `cliente.nome, cliente.cpf, cliente.telefone, cliente.endereco, pedido.id, pedido.data, item.nome, item.quantidade, item.preco, pedido.total`
 
+<br> 
 
 ## 🔧 Pré-requisitos
 
@@ -46,6 +49,8 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 
 ---
 
+<br>
+<br> 
 
 ## ⌨ Autores
 
