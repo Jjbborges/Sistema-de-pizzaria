@@ -90,11 +90,8 @@ npm run build && npm start
 
 ### Arquivos CSV gerados // ainda arrumar
 
-* `csv/entradas.csv`  → `entradaISO,placa,modelo,cor,valorHora`
-* `csv/ativos.csv`    → `entradaISO,placa,modelo,cor,valorHora`
-* `csv/saidas.csv`    → `entradaISO,saidaISO,placa,modelo,cor,valorHora,horas,preco`
-* `csv/resumo_diario.txt` → log simples de entradas/saídas (texto)
-
+* `csv/cadastro.csv`  → `entradaISO,placa,modelo,cor,valorHora`
+* `csv/pedidos.csv`   → 
 
 
 ## 🔧 Pré-requisitos
