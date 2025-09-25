@@ -62,7 +62,7 @@ Back-End/
     ├─ data # código do cardápio .ts
 	├─ models # estruturação de dados .ts
 	├─ services # base de cadastros .ts
-	├─ utils # utilitários .js
+	├─ utils # utilitários .ts
 ├─ csv/           # base de dados em CSV
 ├─ node_modules/  # armazena as dependências externas
 ├─ package.json
