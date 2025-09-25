@@ -114,6 +114,28 @@ No tsconfig.json, garanta que tenha algo assim:
 
 <br>
 
+## ▶️ Como executar
+
+Modo desenvolvimento (executa direto o TypeScript):
+
+```bash
+npm run dev
+```
+
+Transpilar e rodar o JS gerado:
+
+```bash
+npm tsc && node dist/inicio.js
+```
+
+<br>
+
+### ⚡ Scripts
+
+- `npm tsc`: Compila os arquivos TypeScript para JavaScript na pasta dist.
+
+<br>
+
 ## ⌨ Autores
 
 ```
@@ -154,9 +176,6 @@ rm -f csv/*.csv
 * **Consulta por CPF**: Verifica histórico de pedidos realizados com esse CPF. 
 * **Consulta Pizza Mais Pedida**: Verifica qual sabor de pizza saiu mais no dia/mês/ano.
 
-### ⚡ Scripts // ainda arrumar
-
-- `npm tsc`: Compila os arquivos TypeScript para JavaScript na pasta dist.
 
 ## 📁 Estrutura de pastas // ainda arrumar
 
@@ -169,22 +188,6 @@ pizzaria/
 ├─ package.json
 └─ tsconfig.json
 ```
-
-## ▶️ Como executar // ainda arrumar
-
-Modo desenvolvimento (executa direto o TypeScript):
-
-```bash
-npm run dev
-```
-
-Transpilar e rodar o JS gerado:
-
-```bash
-npm run build && npm start
-```
-
-<br />
 
 ## 🗃️ Campos e formatos
 
