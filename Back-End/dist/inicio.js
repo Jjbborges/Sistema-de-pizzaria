@@ -21,10 +21,9 @@ function obterNumero(prompt) {
     let numero;
     do {
         numero = readlineSync.questionInt(`${prompt}: `);
-        if (numero <= 0) {
+        if (numero < 0)
             console.log("❌ Por favor, insira um número positivo.");
-        }
-    } while (numero <= 0);
+    } while (numero < 0);
     return numero;
 }
 // --- Estado da aplicação ---
@@ -132,7 +131,7 @@ function main() {
                         }
                         const total = (0, pedidoService_1.calcularTotalPedido)(carrinho);
                         // --- Método de pagamento ---
-                        const pagamento = obterString("Digite a forma de pagamento (Dinheiro / Cartão)");
+                        const pagamento = obterString("Digite a forma de pagamento (Dinheiro / Cartão / pix)");
                         (0, pedidoService_1.criarPedido)(clienteAtual, carrinho, total, pagamento);
                         console.log(gerarRecibo(clienteAtual, carrinho, total, pagamento));
                         carrinho = [];
