@@ -47,10 +47,7 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 * **npm**
 * **Biblioteca readline-sync**
 
----
-
 <br>
-<br> 
 
 ## ⌨ Autores
 
