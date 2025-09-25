@@ -1,7 +1,7 @@
 <div align="center">
 
   <img src="./pizza.png" alt="Logo" height="200">
-  <h1 align="center"><strong>SISTEMA DA PIZZARIA (nome)</strong></h1>
+  <h1 align="center"><strong>SISTEMA DA PIZZARIA PARMA</strong></h1>
   <p align="center">
 	 Este é um projeto completo de um site de pizzaria desenvolvido em TypeScript + Node.js. <br> Aplicativo criado para gerenciar Entrada, Armazenamento, Saída e Consulta pelos dados do pedido.
   </p>
@@ -22,10 +22,17 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 
 - package.json - Gerencia as dependências e scripts do projeto.
 - tsconfig.json - Configurações do TypeScript.
+- inicio.ts - Código de base e menu.
+- cardapio.ts - Armazena os itens do Cardápio.
+- pedido.ts - Definição de tipos para a estruturação de dados.
+- cadastroService.ts - Cadastro de novos clientes
+- pedidoService.ts - Base do serviço de pedidos.
+- fileUtils.ts - Utilitário de leitura e escrita em CSV.
+- inputUtils.ts - Utilitário de entrada de dados pelo terminal.
 
 <br>
 
-# ⌨ Autores
+## ⌨ Autores
 
 ```
 - Gabriele Larena
@@ -36,6 +43,17 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 ```
 <br>
 
+## 🧹 Limpeza / Reset
+
+Para reiniciar os dados, apague os CSVs dentro de `csv/` (eles serão recriados com cabeçalho na próxima execução):
+
+```bash
+rm -f csv/*.csv 
+```
+
+*(No Windows, apague manualmente ou use `del` no PowerShell.)*
+
+---
 
 
 
@@ -64,10 +82,10 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 
 ```
 pizzaria/
-├─ js/            # arquivos .js gerados pelo TypeScript
-├─ ts/            # código-fonte .ts (ex.: ts/index.ts)
-├─ csv/           # base de dados em CSV + resumo TXT
-├─ json/          # (opcional) configs auxiliares
+├─ dist/          # arquivos .js gerados pelo TypeScript
+├─ src/           # código-fonte .ts (ex.: ts/index.ts)
+├─ csv/           # base de dados em CSV
+├─ node_modules/  # armazena as dependências externas
 ├─ package.json
 └─ tsconfig.json
 ```
@@ -90,11 +108,8 @@ npm run build && npm start
 
 ### Arquivos CSV gerados // ainda arrumar
 
-* `csv/entradas.csv`  → `entradaISO,placa,modelo,cor,valorHora`
-* `csv/ativos.csv`    → `entradaISO,placa,modelo,cor,valorHora`
-* `csv/saidas.csv`    → `entradaISO,saidaISO,placa,modelo,cor,valorHora,horas,preco`
-* `csv/resumo_diario.txt` → log simples de entradas/saídas (texto)
-
+* `csv/cadastro.csv`  → `entradaISO,placa,modelo,cor,valorHora`
+* `csv/pedidos.csv`   → 
 
 
 ## 🔧 Pré-requisitos
@@ -158,14 +173,3 @@ Crie (ou confira) os scripts no **package.json**:
 
 ---
 
-## 🧹 Limpeza / Reset
-
-Para reiniciar os dados, apague os CSVs dentro de `csv/` (eles serão recriados com cabeçalho na próxima execução):
-
-```bash
-rm -f csv/*.csv csv/resumo_diario.txt
-```
-
-*(No Windows, apague manualmente ou use `del` no PowerShell.)*
-
----
