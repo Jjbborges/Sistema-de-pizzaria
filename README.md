@@ -108,8 +108,8 @@ npm run build && npm start
 
 ### Arquivos CSV gerados // ainda arrumar
 
-* `csv/cadastro.csv`  → `entradaISO,placa,modelo,cor,valorHora`
-* `csv/pedidos.csv`   → 
+* `csv/cadastro.csv`  → `id, nome, cpf, telefone, endereco, historicoPedidos`
+* `csv/pedidos.csv`   → `cliente.nome, cliente.cpf, cliente.telefone, cliente.endereco, pedido.id, pedido.data, item.nome, item.quantidade, item.preco, pedido.total`
 
 
 ## 🔧 Pré-requisitos
