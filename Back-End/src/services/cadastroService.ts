@@ -2,55 +2,54 @@
 import { Cliente } from "../models/pedido";
 import { lerCSV, salvarCSV } from "../utils/fileUtils";
 
-const caminhoCadastro = "./csv/cadastro.csv";
+const CAMINHO_CLIENTES = "./csv/cadastro.csv";
 
-// Função para cadastrar ou buscar cliente
-export function cadastrarCliente(cliente: Cliente): Cliente {
-  const linhas = lerCSV(caminhoCadastro);
-
-  // Verifica se já existe cliente com o mesmo CPF
-  const linhaExistente = linhas.find(l => l[2] === cliente.cpf);
-
-  if (linhaExistente) {
-    // Cliente já existe, retorna os dados existentes
-    console.log(`👋 Bem-vindo de volta, ${linhaExistente[1]}!`);
-    return {
-      id: Number(linhaExistente[0]),
-      nome: linhaExistente[1] || "",
-      cpf: linhaExistente[2] || "",
-      telefone: linhaExistente[3] || "",
-      endereco: linhaExistente[4] || "",
-      historicoPedidos: [] // histórico pode ser carregado depois
-    };
-  }
-
-  // Se não existir, cria um novo cliente
-  const clienteId = Date.now(); // Gera ID único
-  const novoCliente: Cliente = {
-    ...cliente,
-    id: clienteId,
-    historicoPedidos: []
-  };
-
-  // Adiciona ao CSV
-  linhas.push([novoCliente.id.toString(), novoCliente.nome, novoCliente.cpf, novoCliente.telefone, novoCliente.endereco]);
-  salvarCSV(caminhoCadastro, linhas);
-
-  console.log(`✅ Cliente ${novoCliente.nome} cadastrado com sucesso!`);
-  return novoCliente;
-}
-
-// Opcional: função para buscar cliente pelo CPF
-export function buscarClientePorCPF(cpf: string): Cliente | undefined {
-  const linhas = lerCSV(caminhoCadastro);
-  const linha = linhas.find(l => l[2] === cpf);
-  if (!linha) return undefined;
-  return {
+// Lê todos os clientes do CSV
+export function lerClientes(): Cliente[] {
+  const dados = lerCSV(CAMINHO_CLIENTES);
+  return dados.map((linha) => ({
     id: Number(linha[0]),
     nome: linha[1] || "",
     cpf: linha[2] || "",
     telefone: linha[3] || "",
     endereco: linha[4] || "",
-    historicoPedidos: []
-  };
+    historicoPedidos: linha[5] ? JSON.parse(linha[5]) : []
+  }));
+}
+
+// Salva todos os clientes no CSV
+export function salvarClientes(clientes: Cliente[]): void {
+  const linhas = clientes.map((c) => [
+    c.id.toString(),
+    c.nome,
+    c.cpf,
+    c.telefone,
+    c.endereco,
+    JSON.stringify(c.historicoPedidos)
+  ]);
+  salvarCSV(CAMINHO_CLIENTES, linhas);
+}
+
+// Busca cliente por CPF
+export function buscarClientePorCPF(cpf: string): Cliente | undefined {
+  const clientes = lerClientes();
+  return clientes.find((c) => c.cpf === cpf);
+}
+
+// Cadastra ou atualiza um cliente
+export function cadastrarCliente(novoCliente: Cliente): Cliente {
+  const clientes = lerClientes();
+
+  // Verifica se cliente já existe
+  const existente = clientes.find((c) => c.cpf === novoCliente.cpf);
+  if (existente) {
+    console.log(`👋 Bem-vindo de volta, ${existente.nome}!`);
+    return existente;
+  }
+
+  // Adiciona novo cliente
+  clientes.push(novoCliente);
+  salvarClientes(clientes);
+  console.log(`✅ Cliente ${novoCliente.nome} cadastrado com sucesso!`);
+  return novoCliente;
 }
