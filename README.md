@@ -49,7 +49,7 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 
 <br>
 
-## 📁 Estrutura de pastas // ainda arrumar
+## 📁 Estrutura de pastas
 
 ```
 Back-End/
