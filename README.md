@@ -43,6 +43,17 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 ```
 <br>
 
+## 🧹 Limpeza / Reset
+
+Para reiniciar os dados, apague os CSVs dentro de `csv/` (eles serão recriados com cabeçalho na próxima execução):
+
+```bash
+rm -f csv/*.csv 
+```
+
+*(No Windows, apague manualmente ou use `del` no PowerShell.)*
+
+---
 
 
 
@@ -162,14 +173,3 @@ Crie (ou confira) os scripts no **package.json**:
 
 ---
 
-## 🧹 Limpeza / Reset
-
-Para reiniciar os dados, apague os CSVs dentro de `csv/` (eles serão recriados com cabeçalho na próxima execução):
-
-```bash
-rm -f csv/*.csv csv/resumo_diario.txt
-```
-
-*(No Windows, apague manualmente ou use `del` no PowerShell.)*
-
----
