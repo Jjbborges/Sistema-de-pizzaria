@@ -139,15 +139,22 @@ No tsconfig.json, garanta que tenha algo assim:
 
 ## ▶️ Como executar
 
+Modo desenvolvimento (executa direto o TypeScript):
+
+```bash
+npm run dev
+```
+
 Transpilar e rodar o JS gerado:
 
 ```bash
-npm tsc && node dist/inicio.js
+npm run build && npm start
 ```
 
 ### ⚡ Scripts
 
 - `npm tsc`: Compila os arquivos TypeScript para JavaScript na pasta dist.
+- `node dist/inicio.js`: Pode ser usado para rodar arquivo.
 
 <br>
 
