@@ -67,7 +67,7 @@ pizzaria/
 ├─ dist/          # arquivos .js gerados pelo TypeScript
 ├─ src/           # código-fonte .ts (ex.: ts/index.ts)
 ├─ csv/           # base de dados em CSV
-├─ node_modules/          # armazena as dependências externas
+├─ node_modules/  # armazena as dependências externas
 ├─ package.json
 └─ tsconfig.json
 ```
