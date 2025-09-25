@@ -1,42 +1,29 @@
-// src/services/pedidoService.ts
-import readlineSync = require("readline-sync");
-import type { Pedido, PedidoItem, Cliente, CardapioItem } from "../models/pedido";
-import { lerCSV, salvarCSV } from "../utils/fileUtils";
+import { Cliente, Pedido, PedidoItem } from "../models/pedido";
 
-const CAMINHO_CSV_PEDIDOS = "csv/pedidos.csv";
-
-export function calcularTotalPedido(itens: PedidoItem[]): number {
-  return itens.reduce((sum, pi) => sum + pi.item.preco * pi.quantidade, 0);
-}
-
-export function criarPedido(cliente: Cliente, itens: PedidoItem[], _number: number, pagamento: string): Pedido {
-  const total = calcularTotalPedido(itens);
-  const novoPedido: Pedido = {
-    id: "PED-" + Date.now(),
-    data: new Date(),
+// Criar um novo pedido
+export function criarPedido(
+  cliente: Cliente,
+  itens: PedidoItem[],
+  total: number,
+  pagamento: string,
+  endereco: string,
+  observacao: string
+): Pedido {
+  const pedido: Pedido = {
+    id: Date.now(), // gera um id único automático
+    data: new Date().toISOString(),
     itens,
-    total
+    total,
+    pagamento,
+    endereco,
+    observacao,
   };
 
-  cliente.historicoPedidos.push(novoPedido);
-  salvarPedidoCSV(cliente, novoPedido);
-  console.log(`🎉 Pedido criado! Total: R$ ${total.toFixed(2)}`);
-  return novoPedido;
+  cliente.historicoPedidos.push(pedido);
+  return pedido;
 }
 
-function salvarPedidoCSV(cliente: Cliente, pedido: Pedido) {
-  const linhasExistentes = lerCSV(CAMINHO_CSV_PEDIDOS);
-  const novasLinhas = pedido.itens.map(item => [
-    cliente.nome,
-    cliente.cpf,
-    cliente.telefone,
-    cliente.endereco,
-    pedido.id,
-    pedido.data.toISOString(),
-    item.item.nome,
-    item.quantidade.toString(),
-    item.item.preco.toFixed(2),
-    pedido.total.toFixed(2)
-  ]);
-  salvarCSV(CAMINHO_CSV_PEDIDOS, [...linhasExistentes, ...novasLinhas]);
+// Calcular o total de um pedido
+export function calcularTotalPedido(itens: PedidoItem[]): number {
+  return itens.reduce((soma, p) => soma + p.item.preco * p.quantidade, 0);
 }

@@ -1,4 +1,4 @@
-import type { Pedido, PedidoItem, Cliente } from "../models/pedido";
+import { Cliente, Pedido, PedidoItem } from "../models/pedido";
+export declare function criarPedido(cliente: Cliente, itens: PedidoItem[], total: number, pagamento: string, endereco: string, observacao: string): Pedido;
 export declare function calcularTotalPedido(itens: PedidoItem[]): number;
-export declare function criarPedido(cliente: Cliente, itens: PedidoItem[], _number: number, pagamento: string): Pedido;
 //# sourceMappingURL=pedidoService.d.ts.map

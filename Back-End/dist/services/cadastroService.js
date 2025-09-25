@@ -1,15 +1,27 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.lerClientes = lerClientes;
-exports.salvarClientes = salvarClientes;
-exports.buscarClientePorCPF = buscarClientePorCPF;
 exports.cadastrarCliente = cadastrarCliente;
+exports.listarClientes = listarClientes;
+exports.buscarClientePorCPF = buscarClientePorCPF;
+exports.atualizarCliente = atualizarCliente;
 const fileUtils_1 = require("../utils/fileUtils");
 const CAMINHO_CLIENTES = "./csv/cadastro.csv";
-// Lê todos os clientes do CSV
-function lerClientes() {
-    const dados = (0, fileUtils_1.lerCSV)(CAMINHO_CLIENTES);
-    return dados.map((linha) => ({
+function cadastrarCliente(cliente) {
+    const clientes = listarClientes();
+    clientes.push(cliente);
+    (0, fileUtils_1.salvarCSV)(CAMINHO_CLIENTES, clientes.map(c => [
+        c.id.toString(),
+        c.nome,
+        c.cpf,
+        c.telefone,
+        c.endereco,
+        JSON.stringify(c.historicoPedidos)
+    ]));
+    return cliente;
+}
+function listarClientes() {
+    const linhas = (0, fileUtils_1.lerCSV)(CAMINHO_CLIENTES);
+    return linhas.map(linha => ({
         id: Number(linha[0]),
         nome: linha[1] || "",
         cpf: linha[2] || "",
@@ -18,36 +30,23 @@ function lerClientes() {
         historicoPedidos: linha[5] ? JSON.parse(linha[5]) : []
     }));
 }
-// Salva todos os clientes no CSV
-function salvarClientes(clientes) {
-    const linhas = clientes.map((c) => [
-        c.id.toString(),
-        c.nome,
-        c.cpf,
-        c.telefone,
-        c.endereco,
-        JSON.stringify(c.historicoPedidos)
-    ]);
-    (0, fileUtils_1.salvarCSV)(CAMINHO_CLIENTES, linhas);
-}
-// Busca cliente por CPF
 function buscarClientePorCPF(cpf) {
-    const clientes = lerClientes();
-    return clientes.find((c) => c.cpf === cpf);
+    const clientes = listarClientes();
+    return clientes.find(c => c.cpf === cpf);
 }
-// Cadastra ou atualiza um cliente
-function cadastrarCliente(novoCliente) {
-    const clientes = lerClientes();
-    // Verifica se cliente já existe
-    const existente = clientes.find((c) => c.cpf === novoCliente.cpf);
-    if (existente) {
-        console.log(`👋 Bem-vindo de volta, ${existente.nome}!`);
-        return existente;
+function atualizarCliente(cliente) {
+    const clientes = listarClientes();
+    const index = clientes.findIndex(c => c.cpf === cliente.cpf);
+    if (index !== -1) {
+        clientes[index] = cliente;
+        (0, fileUtils_1.salvarCSV)(CAMINHO_CLIENTES, clientes.map(c => [
+            c.id.toString(),
+            c.nome,
+            c.cpf,
+            c.telefone,
+            c.endereco,
+            JSON.stringify(c.historicoPedidos)
+        ]));
     }
-    // Adiciona novo cliente
-    clientes.push(novoCliente);
-    salvarClientes(clientes);
-    console.log(`✅ Cliente ${novoCliente.nome} cadastrado com sucesso!`);
-    return novoCliente;
 }
 //# sourceMappingURL=cadastroService.js.map

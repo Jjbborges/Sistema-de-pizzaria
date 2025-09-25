@@ -1,39 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.calcularTotalPedido = calcularTotalPedido;
 exports.criarPedido = criarPedido;
-const fileUtils_1 = require("../utils/fileUtils");
-const CAMINHO_CSV_PEDIDOS = "csv/pedidos.csv";
-function calcularTotalPedido(itens) {
-    return itens.reduce((sum, pi) => sum + pi.item.preco * pi.quantidade, 0);
-}
-function criarPedido(cliente, itens, _number, pagamento) {
-    const total = calcularTotalPedido(itens);
-    const novoPedido = {
-        id: "PED-" + Date.now(),
-        data: new Date(),
+exports.calcularTotalPedido = calcularTotalPedido;
+// Criar um novo pedido
+function criarPedido(cliente, itens, total, pagamento, endereco, observacao) {
+    const pedido = {
+        id: Date.now(), // gera um id único automático
+        data: new Date().toISOString(),
         itens,
-        total
+        total,
+        pagamento,
+        endereco,
+        observacao,
     };
-    cliente.historicoPedidos.push(novoPedido);
-    salvarPedidoCSV(cliente, novoPedido);
-    console.log(`🎉 Pedido criado! Total: R$ ${total.toFixed(2)}`);
-    return novoPedido;
+    cliente.historicoPedidos.push(pedido);
+    return pedido;
 }
-function salvarPedidoCSV(cliente, pedido) {
-    const linhasExistentes = (0, fileUtils_1.lerCSV)(CAMINHO_CSV_PEDIDOS);
-    const novasLinhas = pedido.itens.map(item => [
-        cliente.nome,
-        cliente.cpf,
-        cliente.telefone,
-        cliente.endereco,
-        pedido.id,
-        pedido.data.toISOString(),
-        item.item.nome,
-        item.quantidade.toString(),
-        item.item.preco.toFixed(2),
-        pedido.total.toFixed(2)
-    ]);
-    (0, fileUtils_1.salvarCSV)(CAMINHO_CSV_PEDIDOS, [...linhasExistentes, ...novasLinhas]);
+// Calcular o total de um pedido
+function calcularTotalPedido(itens) {
+    return itens.reduce((soma, p) => soma + p.item.preco * p.quantidade, 0);
 }
 //# sourceMappingURL=pedidoService.js.map

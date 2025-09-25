@@ -1,4 +1,3 @@
-// src/inicio.ts
 import readlineSync = require("readline-sync");
 import { cadastrarCliente, buscarClientePorCPF } from "./services/cadastroService";
 import { criarPedido, calcularTotalPedido } from "./services/pedidoService";
@@ -18,29 +17,30 @@ function obterString(prompt: string, validar?: (v: string) => boolean, erro?: st
   return valor;
 }
 
-function obterNumero(prompt: string): number {
+function obterNumero(prompt: string, permitirZero = true): number {
   let numero: number;
   do {
     numero = readlineSync.questionInt(`${prompt}: `);
-    if (numero < 0) console.log("❌ Por favor, insira um número positivo.");
-  } while (numero < 0);
+    if (!permitirZero && numero < 0) console.log("❌ Por favor, insira um número positivo.");
+  } while (!permitirZero && numero < 0);
   return numero;
-  
 }
+
+function confirmarPergunta(prompt: string): boolean {
+  return readlineSync.keyInYNStrict(prompt);
+}
+
 // --- Estado da aplicação ---
 let clienteAtual: Cliente | undefined;
 let carrinho: PedidoItem[] = [];
 
-// --- Função para escolher item do cardápio ---
+// --- Escolher item do cardápio ---
 function escolherItem(cardapio: CardapioItem[]): PedidoItem | null {
   console.log("\n--- CARDÁPIO ---");
-  cardapio.forEach((item) =>
-    console.log(`${item.id} - ${item.nome} - R$${item.preco.toFixed(2)}`)
-  );
+  cardapio.forEach((item) => console.log(`${item.id} - ${item.nome} - R$${item.preco.toFixed(2)}`));
 
   const idStr = obterString("Digite o ID do produto que deseja");
   const id = Number(idStr);
-
   if (isNaN(id)) {
     console.log("ID inválido!");
     return null;
@@ -52,8 +52,7 @@ function escolherItem(cardapio: CardapioItem[]): PedidoItem | null {
     return null;
   }
 
-  const quantidade = obterNumero("Digite a quantidade desejada");
-
+  const quantidade = obterNumero("Digite a quantidade desejada", false);
   return { item: itemEscolhido, quantidade };
 }
 
@@ -66,20 +65,18 @@ function mostrarMenuPrincipal(): void {
   console.log("4 - Pizza Mais Pedida");
   console.log("0 - Sair");
 
-  if (clienteAtual) {
-    console.log(`\nCliente Atual: ${clienteAtual.nome} | CPF: ${clienteAtual.cpf}`);
-  } else {
-    console.log("\nNenhum cliente logado.");
-  }
+  if (clienteAtual) console.log(`\nCliente Atual: ${clienteAtual.nome} | CPF: ${clienteAtual.cpf}`);
+  else console.log("\nNenhum cliente logado.");
 }
 
 // --- Função de recibo ---
-function gerarRecibo(cliente: Cliente, itens: PedidoItem[], total: number, pagamento: string): string {
+function gerarRecibo(cliente: Cliente, itens: PedidoItem[], total: number, pagamento: string, endereco: string, observacao: string): string {
   let recibo = "\n===== RECIBO PIZZARIA Parma =====\n";
   recibo += `Cliente: ${cliente.nome}\n`;
   recibo += `CPF: ${cliente.cpf}\n`;
-  recibo += `Endereço: ${cliente.endereco}\n`;
+  recibo += `Endereço: ${endereco}\n`;
   recibo += `Data: ${new Date().toLocaleString()}\n`;
+  if (observacao) recibo += `Observação: ${observacao}\n`;
   recibo += "\nItens:\n";
   itens.forEach((p) => {
     recibo += `- ${p.quantidade}x ${p.item.nome} (R$${p.item.preco.toFixed(2)})\n`;
@@ -90,6 +87,43 @@ function gerarRecibo(cliente: Cliente, itens: PedidoItem[], total: number, pagam
   return recibo;
 }
 
+// --- Estatísticas de pizzas mais pedidas ---
+function pizzaMaisPedida(cliente: Cliente, periodo: "diario" | "semanal" | "mensal" | "anual"): string {
+  const contagem: Record<string, number> = {};
+  const agora = new Date();
+
+  cliente.historicoPedidos.forEach(pedido => {
+    const dataPedido = new Date(pedido.data);
+    let incluir = false;
+
+    switch (periodo) {
+      case "diario":
+        incluir = dataPedido.toDateString() === agora.toDateString();
+        break;
+      case "semanal":
+        const semanaAtual = Math.ceil((agora.getDate() + 6 - agora.getDay()) / 7);
+        const semanaPedido = Math.ceil((dataPedido.getDate() + 6 - dataPedido.getDay()) / 7);
+        incluir = semanaAtual === semanaPedido && dataPedido.getMonth() === agora.getMonth();
+        break;
+      case "mensal":
+        incluir = dataPedido.getMonth() === agora.getMonth() && dataPedido.getFullYear() === agora.getFullYear();
+        break;
+      case "anual":
+        incluir = dataPedido.getFullYear() === agora.getFullYear();
+        break;
+    }
+
+    if (incluir) {
+      pedido.itens.forEach(i => {
+        contagem[i.item.nome] = (contagem[i.item.nome] || 0) + i.quantidade;
+      });
+    }
+  });
+
+  const maisPedida = Object.entries(contagem).sort((a, b) => b[1] - a[1])[0];
+  return maisPedida ? `${maisPedida[0]} (${maisPedida[1]}x)` : "Nenhuma pizza nesse período";
+}
+
 // --- Loop principal ---
 function main(): void {
   while (true) {
@@ -98,7 +132,6 @@ function main(): void {
 
     switch (opcao) {
       case 1:
-        // --- Cadastro/Login ---
         const cpf = obterString("Digite seu CPF", (v) => /^\d{11}$/.test(v), "CPF deve ter 11 números.");
         let cliente = buscarClientePorCPF(cpf);
         if (cliente) {
@@ -110,6 +143,7 @@ function main(): void {
           const endereco = obterString("Digite seu endereço");
           const clienteId = Date.now();
           clienteAtual = cadastrarCliente({ id: clienteId, nome, cpf, telefone, endereco, historicoPedidos: [] });
+          console.log("✅ Cadastro realizado com sucesso!");
         }
         break;
 
@@ -128,8 +162,8 @@ function main(): void {
           console.log("0 - Voltar ao menu principal");
 
           const opPedido = obterNumero("Escolha uma opção");
-
           let item: PedidoItem | null = null;
+
           if (opPedido === 1) item = escolherItem(pizzas);
           else if (opPedido === 2) item = escolherItem(bebidas);
           else if (opPedido === 3) item = escolherItem(sobremesas);
@@ -145,14 +179,14 @@ function main(): void {
               continue;
             }
 
+            const observacao = confirmarPergunta("Deseja adicionar alguma observação?") ? obterString("Digite sua observação") : "";
+            const enderecoConfirmado = confirmarPergunta(`Deseja confirmar o endereço atual? ${clienteAtual.endereco}`) ? clienteAtual.endereco : obterString("Digite seu endereço de entrega");
+            const pagamento = obterString("Digite a forma de pagamento (Dinheiro / Cartão / Pix)");
+
             const total = calcularTotalPedido(carrinho);
+            criarPedido(clienteAtual, carrinho, total, pagamento, enderecoConfirmado, observacao);
 
-            // --- Método de pagamento ---
-            const pagamento = obterString("Digite a forma de pagamento (Dinheiro / Cartão / pix)");
-
-            criarPedido(clienteAtual, carrinho, total, pagamento);
-            console.log(gerarRecibo(clienteAtual, carrinho, total, pagamento));
-
+            console.log(gerarRecibo(clienteAtual, carrinho, total, pagamento, enderecoConfirmado, observacao));
             carrinho = [];
             break;
           }
@@ -173,7 +207,15 @@ function main(): void {
         break;
 
       case 4:
-        console.log("Função de pizza mais pedida ainda não implementada");
+        if (!clienteAtual) {
+          console.log("❌ Faça login primeiro.");
+          break;
+        }
+        console.log("\n--- Pizza Mais Pedida ---");
+        console.log(`Diário: ${pizzaMaisPedida(clienteAtual, "diario")}`);
+        console.log(`Semanal: ${pizzaMaisPedida(clienteAtual, "semanal")}`);
+        console.log(`Mensal: ${pizzaMaisPedida(clienteAtual, "mensal")}`);
+        console.log(`Anual: ${pizzaMaisPedida(clienteAtual, "anual")}`);
         break;
 
       case 0:
