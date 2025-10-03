@@ -1,0 +1,18 @@
+[
+  {
+    "nome": "Julia Borges",
+    "cpf": "12345678901",
+    "telefone": "1234567890",
+    "endereco": "Rua Flor encantada, 45",
+    "id": 1,
+    "historicoPedidos": []
+  },
+  {
+    "nome": "Bruna Marquesine",
+    "cpf": "12345678902",
+    "telefone": "1234567896",
+    "endereco": "Rua Santa Maria, 67",
+    "id": 2,
+    "historicoPedidos": []
+  }
+]

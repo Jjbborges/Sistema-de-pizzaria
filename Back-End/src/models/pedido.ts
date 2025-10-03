@@ -2,6 +2,7 @@ export interface CardapioItem {
   id: number;
   nome: string;
   preco: number;
+  categoria: "pizza" | "bebida" | "sobremesa"; // obrigatório
 }
 
 export interface PedidoItem {
@@ -9,14 +10,21 @@ export interface PedidoItem {
   quantidade: number;
 }
 
+export type StatusPedido = "pendente" | "preparo" | "entregue" | "cancelado";
+
 export interface Pedido {
-  id: number; // obrigatório
-  data: string;
+  id: number;
+  clienteId: number;       // id do cliente
+  clienteNome: string;     
+  data: string;            // data em string legível
   itens: PedidoItem[];
   total: number;
-  pagamento: string;
+  pagamento: "dinheiro" | "cartao" | "pix"; 
+  pago: boolean;           // status do pagamento
   endereco: string;
-  observacao: string;
+  observacao?: string;
+  status: StatusPedido;    
+  entregador?: string;     // opcional, para médio porte
 }
 
 export interface Cliente {

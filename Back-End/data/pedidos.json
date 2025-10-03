@@ -1,0 +1,54 @@
+[
+  {
+    "id": 1,
+    "data": "03/10/2025, 15:56:25",
+    "itens": [
+      {
+        "item": {
+          "nome": "Pizza de Calabresa",
+          "preco": 54,
+          "categoria": "pizza",
+          "id": 1
+        },
+        "quantidade": 3
+      }
+    ],
+    "total": 162,
+    "pagamento": "Pix",
+    "endereco": "Rua Flor de Liz",
+    "observacao": "",
+    "clienteNome": "Julia Borges"
+  },
+  {
+    "id": 2,
+    "clienteId": 2,
+    "clienteNome": "Bruna Marquesine",
+    "data": "2025-10-03T21:42:12.905Z",
+    "itens": [
+      {
+        "item": {
+          "nome": "Pizza de Frango",
+          "preco": 54,
+          "categoria": "pizza",
+          "id": 2
+        },
+        "quantidade": 4
+      },
+      {
+        "item": {
+          "nome": "Pizza de Calabresa",
+          "preco": 54,
+          "categoria": "pizza",
+          "id": 1
+        },
+        "quantidade": 1
+      }
+    ],
+    "total": 270,
+    "pagamento": "dinheiro",
+    "pago": false,
+    "endereco": "Rua Santa Maria, 67",
+    "observacao": "",
+    "status": "pendente"
+  }
+]
