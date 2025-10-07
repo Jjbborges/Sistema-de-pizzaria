@@ -50,5 +50,28 @@
     "endereco": "Rua Santa Maria, 67",
     "observacao": "",
     "status": "pendente"
+  },
+  {
+    "id": 3,
+    "clienteId": 1,
+    "clienteNome": "Julia Borges",
+    "data": "2025-10-03T23:16:54.693Z",
+    "itens": [
+      {
+        "item": {
+          "nome": "Pizza de Frango",
+          "preco": 54,
+          "categoria": "pizza",
+          "id": 2
+        },
+        "quantidade": 2
+      }
+    ],
+    "total": 108,
+    "pagamento": "cartao",
+    "pago": false,
+    "endereco": "Rua Flor Encantaa, 46",
+    "observacao": "que venha com bastante queijo",
+    "status": "pendente"
   }
 ]
