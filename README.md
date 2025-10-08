@@ -31,21 +31,20 @@ Este projeto foi desenvolvido com as seguintes linguagens:
 - pedidoService.ts - Base do serviço de pedidos.
 - fileUtils.ts - Utilitário de leitura e escrita em CSV.
 - inputUtils.ts - Utilitário de entrada de dados pelo terminal.
+- validacoes.ts -  Valida as informações inseridas. 
 
 <br>
 
-### 🗃 Arquivos CSV gerados
+## ⚙️ Recursos 
 
-* `csv/cadastro.csv`  → `id, nome, cpf, telefone, endereco, historicoPedidos`
-* `csv/pedidos.csv`   → `cliente.nome, cliente.cpf, cliente.telefone, cliente.endereco, pedido.id, pedido.data, item.nome, item.quantidade, item.preco, pedido.total`
-
-<br> 
-
-## 🔧 Pré-requisitos
-
-* **Node.js 16+** (recomendado 18 ou 20)
-* **npm**
-* **Biblioteca readline-sync**
+* **Entrada**: Nome Completo, CPF, Telefone, Endereço, Sabores de Pizza, Bebidas, Modo de entrega, Forma de Pagamento.
+* **Armazenamento**: `csv/entradas.csv`, `csv/pedidos.csv`
+* **Saída**: Preço, Quantidade, Produtos escolhidos. 
+* **Consulta por CPF**: Verifica histórico de pedidos realizados com esse CPF. 
+* **Consulta Pizza Mais Pedida**: Verifica qual sabor de pizza saiu mais no dia/mês/ano.
+* **Cadastro de Clientes**: Registra, altera, consulta e exclui clientes.
+* **Cadastro de Produtos**: Gerencia produtos.
+* **Emissão de Comprovante**: Gerar comprovante de compra para cada pedido.
 
 <br>
 
@@ -72,34 +71,18 @@ Back-End/
 
 <br>
 
-## 🖥️ Uso // ainda arrumar
+### 🗃 Arquivos CSV gerados
 
-1. **Entrada** → informe **Nome completo**, **CPF**, **Telefone**, **Pizzas**, **Bebidas**, **Modo de Entrega**, **Forma de Pagamento** e **Endereço**. O sistema grava em `cadastro.csv`.
-3. **Saída** → O Sistema calcula o preço dos produtos escolhidos e cria a nota fiscal do pedido. O sistema grava em `pedidos.csv`.
-4. **Consulta por placa** → primeiro busca em `ativos.csv`; se não encontrar, mostra a **última saída** de `saidas.csv`.
-5. **Listar ativos** → imprime no console todos os veículos atualmente no pátio.
-6. **Consulta por CPF** → Procura o histórico de pedidos pelo **CPF** inserido e devolve os valores e produtos escolhidos nas compras anteriores.
-7. **Consulta Pizza Mais Pedida** → Inserir um **dia/mês/ano**, que ao ser executado, o sistema devolverá os produtos mais pedidos em tal data.
+* `csv/cadastro.csv`  → `id, nome, cpf, telefone, endereco, historicoPedidos`
+* `csv/pedidos.csv`   → `cliente.nome, cliente.cpf, cliente.telefone, cliente.endereco, pedido.id, pedido.data, item.nome, item.quantidade, item.preco, pedido.total`
 
-<br>
+<br> 
 
-## ⚙️ Recursos // ainda arrumar
+## 🔧 Pré-requisitos
 
-* **Entrada**: Nome Completo, CPF, Telefone, Endereço, Sabores de Pizza, Bebidas, Modo de entrega, Forma de Pagamento.
-* **Armazenamento**: `csv/entradas.csv`, `csv/pedidos.csv`, `csv/saidas.csv` + `csv/resumo_diario.txt`. // não entendi essa parte, validar quem estiver fazendo código
-* **Saída**: Preço, Quantidade, Produtos escolhidos. 
-* **Consulta por CPF**: Verifica histórico de pedidos realizados com esse CPF. 
-* **Consulta Pizza Mais Pedida**: Verifica qual sabor de pizza saiu mais no dia/mês/ano.
-
-<br>
-
-## 🗃️ Campos e formatos //ainda arrumar
-
-* **Datas**: ISO (ex.: `2025-08-19T18:40:02.123Z`).
-* **Placa**: armazenada em **maiúsculas**.
-* **valorHora**: número decimal (ex.: `12.5`).
-* **horas**: inteiro ≥ 1 (arredondado para cima a partir da diferença de horários).
-* **preco**: `horas × valorHora` com 2 casas decimais.
+* **Node.js 16+** (recomendado 18 ou 20)
+* **npm**
+* **Biblioteca readline-sync**
 
 <br>
 
@@ -182,10 +165,40 @@ Transpilar e rodar o JS gerado:
 npm run build && npm start
 ```
 
-### ⚡ Scripts
 
-- `npm tsc`: Compila os arquivos TypeScript para JavaScript na pasta dist.
-- `node dist/inicio.js`: Pode ser usado para rodar arquivo.
+## 🖥️ Uso 
+
+1. **Entrada** → informe **Nome completo**, **CPF**, **Telefone**, **Pizzas**, **Bebidas**, **Modo de Entrega**, **Forma de Pagamento** e **Endereço**. O sistema grava em `cadastro.csv`.
+2. **Saída** → O Sistema calcula o preço dos produtos escolhidos e cria a nota fiscal do pedido. O sistema grava em `pedidos.csv`.
+3. **Consulta por CPF** → Procura o histórico de pedidos pelo **CPF** inserido e retorna todos os produtos e valores dos pedidos anteriores feitos por esse cliente.
+4. **Relatório de Vendas por Produto** → Insira um **dia/mês/ano** e o sistema mostrará o total vendido de cada produto nesse período, incluindo o número de unidades e valor total.
+* **Cadastro de Clientes**: Registra, altera, consulta e exclui clientes.
+* **Cadastro de Produtos**: Gerencia produtos.
+* **Emissão de Comprovante**: Gerar comprovante de compra para cada pedido.
+
+<br>
+
+## 🗃️ Campos e formatos 
+
+* **Datas**: ISO (ex.: `2025-08-19T18:40:02.123Z`).
+* **Nome**: Deve conter apenas letras (sem números) e não pode ser vazio.
+* **CPF**: Deve conter exclusivamente números, com exatamente 11 dígitos.
+* **Telefone**: Deve conter exclusivamente números, com no mínimo 10 dígitos.
+* **Valor**: Deve ser um número decimal válido (exemplo: 12.5).
+* **Endereço**: Campo obrigatório, não podendo estar vazio.
+* **Pedido**: O valor do pedido deve ser calculado pela expressão `p.item.preco × p.quantidade`, com resultado formatado em 2 casas decimais.
+
+<br>
+
+## 🧹 Limpeza / Reset
+
+Para reiniciar os dados, apague os CSVs dentro de `csv/` (eles serão recriados com cabeçalho na próxima execução):
+
+```bash
+rm -f csv/*.csv 
+```
+
+*(No Windows, apague manualmente ou use `del` no PowerShell.)*
 
 <br>
 
@@ -199,13 +212,3 @@ npm run build && npm start
 - Maria Fernanda Venda
 ```
 <br>
-
-## 🧹 Limpeza / Reset
-
-Para reiniciar os dados, apague os CSVs dentro de `csv/` (eles serão recriados com cabeçalho na próxima execução):
-
-```bash
-rm -f csv/*.csv 
-```
-
-*(No Windows, apague manualmente ou use `del` no PowerShell.)*

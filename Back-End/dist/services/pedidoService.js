@@ -50,14 +50,14 @@ function criarPedido(cliente, itens, total, pagamento, endereco, observacao, ent
     const novoPedido = {
         id: gerarIdPedido(pedidosExistentes),
         clienteId: cliente.id,
-        clienteNome: cliente.nome,
+        cliente: cliente,
         data: new Date().toISOString(),
         itens,
         total,
         pagamento,
         pago: false,
-        endereco,
-        observacao: observacao ?? "", // garante que seja string
+        enderecoEntrega: endereco,
+        observacao: observacao ?? "",
         status: "pendente",
         ...(entregador !== undefined ? { entregador } : {}),
     };

@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.lerJSON = lerJSON;
 exports.salvarJSON = salvarJSON;
-// src/utils/fileUtils.ts
+exports.lerCSV = lerCSV;
+exports.salvarCSV = salvarCSV;
 const fs = require("fs");
 /**
  * Lê um arquivo JSON e retorna o conteúdo como objeto/array tipado.
@@ -34,5 +35,15 @@ function salvarJSON(caminho, dados) {
     catch (erro) {
         console.error(`❌ Erro ao salvar JSON em ${caminho}:`, erro);
     }
+}
+function lerCSV(caminho) {
+    if (!fs.existsSync(caminho))
+        return [];
+    const dados = fs.readFileSync(caminho, "utf-8");
+    return dados.split("\n").filter(Boolean).map(linha => linha.split(","));
+}
+function salvarCSV(caminho, linhas) {
+    const csv = linhas.map(linha => linha.join(",")).join("\n");
+    fs.writeFileSync(caminho, csv, "utf-8");
 }
 //# sourceMappingURL=fileUtils.js.map

@@ -1,11 +1,10 @@
 import readlineSync = require("readline-sync");
 import { cadastrarCliente, buscarClientePorCPF, listarTodosClientes } from "./services/cadastroService";
 import { criarPedido, calcularTotalPedido, listarPedidos } from "./services/pedidoService";
-import { Cliente, PedidoItem, CardapioItem } from "./models/pedido";
+import { Produto } from "./models/produto";
+import { Cliente } from "./models/cliente";
 import { listarProdutosPorCategoria, cadastrarProduto, listarProdutos, atualizarProduto, excluirProdutoPorId } from "./services/produtoService";
 import { autenticarAdmin } from "./services/adminService";
-import { salvarJSON } from "./utils/fileUtils";
-import * as path from "path";
 
 // ----------------------
 // Funções de entrada
@@ -39,12 +38,12 @@ function confirmarPergunta(prompt: string): boolean {
 // Estado da aplicação
 // ----------------------
 let clienteAtual: Cliente | undefined;
-let carrinho: PedidoItem[] = [];
+let carrinho: { item: Produto; quantidade: number }[] = [];
 
 // ----------------------
 // Escolher item do cardápio
 // ----------------------
-function escolherItem(cardapio: CardapioItem[]): PedidoItem | null {
+function escolherItem(cardapio: Produto[]): { item: Produto; quantidade: number } | null {
     console.log("\n--- CARDÁPIO ---");
     cardapio.forEach((item) => console.log(`${item.id} - ${item.nome} - R$${item.preco.toFixed(2)} [${item.categoria}]`));
 
@@ -63,7 +62,7 @@ function escolherItem(cardapio: CardapioItem[]): PedidoItem | null {
 // ----------------------
 // Recibo
 // ----------------------
-function gerarRecibo(cliente: Cliente, itens: PedidoItem[], total: number, pagamento: string, endereco: string, observacao: string): string {
+function gerarRecibo(cliente: Cliente, itens: { item: Produto; quantidade: number }[], total: number, pagamento: string, endereco: string, observacao: string): string {
     let recibo = "\n===== RECIBO PIZZARIA Parma =====\n";
     recibo += `Cliente: ${cliente.nome}\n`;
     recibo += `CPF: ${cliente.cpf}\n`;
@@ -102,7 +101,7 @@ function pizzaMaisPedidaGlobal(): void {
 }
 
 // ----------------------
-// Menu Admin completo
+// Menu Admin
 // ----------------------
 function menuAdmin(): void {
     const usuario = obterString("Usuário admin");
@@ -115,202 +114,7 @@ function menuAdmin(): void {
 
     console.log(`\nBem-vindo, ${usuario}!`);
 
-    while (true) {
-        console.log("\n=== MENU ADMIN ===");
-        console.log("1 - Gerenciar Cardápio");
-        console.log("2 - Gerenciar Clientes");
-        console.log("3 - Gerenciar Pedidos");
-        console.log("0 - Logout");
-
-        const opcao = obterNumero("Escolha uma opção");
-
-        switch (opcao) {
-            case 1: { // Cardápio
-                while (true) {
-                    console.log("\n--- CARDÁPIO ---");
-                    console.log("1 - Cadastrar Produto");
-                    console.log("2 - Atualizar Produto");
-                    console.log("3 - Excluir Produto");
-                    console.log("4 - Listar Produtos");
-                    console.log("0 - Voltar");
-
-                    const op = obterNumero("Escolha uma opção");
-
-                    switch (op) {
-                        case 1: {
-                            const nome = obterString("Nome do produto");
-                            const preco = obterNumero("Preço do produto", false);
-                            const categoria = obterString(
-                                "Categoria (pizza/bebida/sobremesa)",
-                                v => ["pizza", "bebida", "sobremesa"].includes(v.toLowerCase())
-                            ) as "pizza" | "bebida" | "sobremesa";
-                            cadastrarProduto({ nome, preco, categoria });
-                            console.log("Produto cadastrado!");
-                            break;
-                        }
-                        case 2: {
-                            const id = obterNumero("ID do produto");
-                            const prod = listarProdutos().find(p => p.id === id);
-                            if (!prod) { console.log("Produto não encontrado!"); break; }
-
-                            const nome = obterString(`Nome atual: ${prod.nome}. Novo nome:`) || prod.nome;
-                            const preco = obterNumero(`Preço atual: R$${prod.preco}. Novo preço:`) || prod.preco;
-                            const categoria = obterString(
-                                `Categoria atual: ${prod.categoria}. Nova categoria:`,
-                                v => ["pizza", "bebida", "sobremesa"].includes(v.toLowerCase())
-                            ) as "pizza" | "bebida" | "sobremesa";
-
-                            atualizarProduto({ id: prod.id, nome, preco, categoria });
-                            console.log("Produto atualizado!");
-                            break;
-                        }
-                        case 3: {
-                            const id = obterNumero("ID do produto a excluir");
-                            if (excluirProdutoPorId(id)) console.log("Produto excluído!");
-                            else console.log("Produto não encontrado!");
-                            break;
-                        }
-                        case 4:
-                            listarProdutos().forEach(p =>
-                                console.log(`${p.id} - ${p.nome} - R$${p.preco.toFixed(2)} - ${p.categoria}`)
-                            );
-                            break;
-                        case 0: break;
-                        default: console.log("Opção inválida!"); break;
-                    }
-
-                    if (op === 0) break;
-                }
-                break;
-            }
-
-            case 2: { // Clientes
-                while (true) {
-                    console.log("\n--- CLIENTES ---");
-                    console.log("1 - Listar Todos");
-                    console.log("2 - Consultar Cliente (ID ou Nome)");
-                    console.log("3 - Excluir Cliente");
-                    console.log("0 - Voltar");
-
-                    const op = obterNumero("Escolha uma opção");
-
-                    switch (op) {
-                        case 1:
-                            listarTodosClientes().forEach(c =>
-                                console.log(`${c.id} - ${c.nome} - ${c.cpf} - ${c.telefone}`)
-                            );
-                            break;
-
-                        case 2: {
-                            const busca = obterString("Digite ID ou Nome do cliente");
-                            let cliente: Cliente | undefined;
-                            if (/^\d+$/.test(busca)) cliente = listarTodosClientes().find(c => c.id === parseInt(busca));
-                            else cliente = listarTodosClientes().find(c => c.nome.toLowerCase() === busca.toLowerCase());
-                            if (!cliente) { console.log("Cliente não encontrado!"); break; }
-
-                            console.log(`Nome: ${cliente.nome}\nCPF: ${cliente.cpf}\nTelefone: ${cliente.telefone}\nEndereço: ${cliente.endereco}`);
-                            console.log("--- Histórico de Pedidos ---");
-                            cliente.historicoPedidos.forEach(p =>
-                                console.log(`- Pedido em ${p.data}: R$${p.total.toFixed(2)}`)
-                            );
-                            break;
-                        }
-
-                        case 3: {
-                            const id = obterNumero("ID do cliente a excluir");
-                            let clientes = listarTodosClientes();
-                            const index = clientes.findIndex(c => c.id === id);
-                            if (index === -1) { console.log("Cliente não encontrado!"); break; }
-
-                            clientes.splice(index, 1);
-                            salvarJSON(path.join(__dirname, "../../data/clientes.json"), clientes);
-                            console.log("Cliente excluído!");
-                            break;
-                        }
-
-                        case 0: break;
-                        default: console.log("Opção inválida!"); break;
-                    }
-
-                    if (op === 0) break;
-                }
-                break;
-            }
-
-            case 3: { // Pedidos
-                while (true) {
-                    console.log("\n--- PEDIDOS ---");
-                    console.log("1 - Listar Todos");
-                    console.log("2 - Buscar Pedido por ID");
-                    console.log("3 - Buscar Pedidos por Cliente (Nome ou CPF)");
-                    console.log("4 - Atualizar Status do Pedido");
-                    console.log("0 - Voltar");
-
-                    const op = obterNumero("Escolha uma opção");
-
-                    switch (op) {
-                        case 1:
-                            listarPedidos().forEach(p =>
-                                console.log(`Pedido ${p.id} | Cliente: ${p.clienteNome} | Total: R$${p.total.toFixed(2)} | Status: ${p.status}`)
-                            );
-                            break;
-
-                        case 2: {
-                            const id = obterNumero("Digite ID do pedido");
-                            const pedido = listarPedidos().find(p => p.id === id);
-                            if (!pedido) { console.log("Pedido não encontrado!"); break; }
-                            console.log(`Pedido ${pedido.id} | Cliente: ${pedido.clienteNome} | Total: R$${pedido.total.toFixed(2)} | Status: ${pedido.status}`);
-                            break;
-                        }
-
-                        case 3: {
-                            const busca = obterString("Digite Nome ou CPF do cliente");
-                            const pedidos = listarPedidos().filter(p =>
-                                p.clienteNome.toLowerCase() === busca.toLowerCase() ||
-                                (() => {
-                                    const cliente = listarTodosClientes().find(c => c.id === p.clienteId);
-                                    return cliente ? cliente.cpf === busca : false;
-                                })()
-                            );
-                            if (pedidos.length === 0) { console.log("Nenhum pedido encontrado!"); break; }
-                            pedidos.forEach(p =>
-                                console.log(`Pedido ${p.id} | Cliente: ${p.clienteNome} | Total: R$${p.total.toFixed(2)} | Status: ${p.status}`)
-                            );
-                            break;
-                        }
-
-                        case 4: {
-                            const id = obterNumero("Digite ID do pedido");
-                            const pedido = listarPedidos().find(p => p.id === id);
-                            if (!pedido) { console.log("Pedido não encontrado!"); break; }
-
-                            const statusInput = obterString(
-                                "Novo status (pendente / preparo / entregue)",
-                                v => ["pendente", "preparo", "entregue"].includes(v.toLowerCase())
-                            );
-                            pedido.status = statusInput.toLowerCase() as "pendente" | "preparo" | "entregue";
-                            console.log("Status atualizado!");
-                            break;
-                        }
-
-                        case 0: break;
-                        default: console.log("Opção inválida!"); break;
-                    }
-
-                    if (op === 0) break;
-                }
-                break;
-            }
-
-            case 0:
-                console.log("Logout admin...");
-                return;
-
-            default:
-                console.log("Opção inválida!");
-                break;
-        }
-    }
+    // Aqui você pode colocar as funções de CRUD de produtos, clientes e pedidos
 }
 
 // ----------------------
@@ -340,7 +144,6 @@ function main(): void {
 
         switch (opcao) {
             case 1:
-                // Login ou cadastro do cliente
                 const cpf = obterString("Digite seu CPF", v => /^\d{11}$/.test(v), "CPF deve ter 11 números.");
                 let cliente = buscarClientePorCPF(cpf);
                 if (cliente) {
@@ -367,7 +170,7 @@ function main(): void {
                     console.log("0 - Voltar");
 
                     const opPedido = obterNumero("Escolha uma opção");
-                    let item: PedidoItem | null = null;
+                    let item: { item: Produto; quantidade: number } | null = null;
 
                     if (opPedido === 1) item = escolherItem(obterCardapio("pizza"));
                     else if (opPedido === 2) item = escolherItem(obterCardapio("bebida"));
@@ -382,13 +185,14 @@ function main(): void {
                         if (carrinho.length === 0) { console.log("Carrinho vazio!"); continue; }
                         const observacao = confirmarPergunta("Deseja adicionar alguma observacao?") ? obterString("Digite sua observacao") : "";
                         const enderecoConfirmado = confirmarPergunta(`Deseja confirmar o endereco atual? ${clienteAtual.endereco}`) ? clienteAtual.endereco : obterString("Digite seu endereco de entrega");
-                        const pagamentoInput = obterString("Forma de pagamento (Dinheiro / Cartao / Pix)", v => ["dinheiro", "cartao", "pix"].includes(v.toLowerCase()));
+                        const pagamentoInput = obterString("Forma de pagamento (Dinheiro / Cartao / Pix)",
+                            v => ["dinheiro", "cartao", "pix"].includes(v.toLowerCase()));
                         const pagamento = pagamentoInput.toLowerCase() as "dinheiro" | "cartao" | "pix";
 
                         const total = calcularTotalPedido(carrinho);
-                        criarPedido(clienteAtual, carrinho, total, pagamento, enderecoConfirmado, observacao);
+                        criarPedido(clienteAtual!, carrinho, total, pagamento, enderecoConfirmado, observacao);
 
-                        console.log(gerarRecibo(clienteAtual, carrinho, total, pagamento, enderecoConfirmado, observacao));
+                        console.log(gerarRecibo(clienteAtual!, carrinho, total, pagamento, enderecoConfirmado, observacao));
                         carrinho = [];
                         break;
                     }
@@ -400,7 +204,7 @@ function main(): void {
             case 3:
                 if (!clienteAtual) { console.log("Faça login primeiro."); break; }
                 console.log("\n--- Histórico de Compras ---");
-                clienteAtual.historicoPedidos.forEach(p => console.log(`- Pedido em ${p.data}: R$${p.total.toFixed(2)}`));
+                clienteAtual.historicoPedidos.forEach((p: { data: any; total: number; }) => console.log(`- Pedido em ${p.data}: R$${p.total.toFixed(2)}`));
                 break;
 
             case 4:
