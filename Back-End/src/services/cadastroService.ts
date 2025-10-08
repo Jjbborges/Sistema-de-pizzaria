@@ -1,49 +1,57 @@
 // src/services/cadastroService.ts
-import { salvarCSV, carregarCSV } from "../utils/fileUtils";
-import { Cliente } from "../models/cliente";
+import * as path from "path";
+import { Cliente } from "../models/pedido"; // você já colocou Cliente dentro de pedido.ts
+import { lerJSON, salvarJSON } from "../utils/fileUtils";
 
-const caminhoArquivo = "src/csv/cadastro.csv";
+const CAMINHO_CLIENTES = path.join(__dirname, "../../data/clientes.json");
 
-// --- Cadastrar um cliente ---
-export function cadastrarCliente(cliente: Cliente): Cliente {
-  const clientes = carregarClientes();
-  clientes.push(cliente);
-  salvarClientes(clientes);
-  return cliente;
+/**
+ * Gera um ID incremental com base nos clientes existentes
+ */
+function gerarIdAutomatico(clientes: Cliente[]): number {
+  if (clientes.length === 0) return 1;
+  return Math.max(...clientes.map(c => c.id)) + 1;
 }
 
-// --- Carregar todos os clientes ---
-export function carregarClientes(): Cliente[] {
-  const linhas = carregarCSV(caminhoArquivo);
-
-  return linhas.map((linha: { split: (arg0: string) => [any, any, any, any, any]; }) => {
-    const [idStr, nome, cpf, telefone, endereco] = linha.split(",");
-
-    return {
-      id: Number(idStr),
-      nome: nome || "",
-      cpf: cpf || "",
-      telefone: telefone || "",
-      endereco: endereco || "",
-      historicoPedidos: []
-    };
-  });
+/**
+ * Lista todos os clientes cadastrados
+ */
+export function listarTodosClientes(): Cliente[] {
+  try {
+    return lerJSON<Cliente[]>(CAMINHO_CLIENTES);
+  } catch (err) {
+    console.error("❌ Erro ao ler clientes:", err);
+    return [];
+  }
 }
 
-// --- Salvar todos os clientes ---
-export function salvarClientes(clientes: Cliente[]): void {
-  const conteudo = clientes.map(c =>
-    `${c.id},${c.nome},${c.cpf},${c.telefone},${c.endereco}`
-  );
-  salvarCSV(caminhoArquivo, conteudo);
+/**
+ * Cadastra um novo cliente com ID automático
+ */
+export function cadastrarCliente(cliente: Omit<Cliente, "id" | "historicoPedidos">): Cliente {
+  const clientes = listarTodosClientes();
+
+  const novoCliente: Cliente = {
+    ...cliente,
+    id: gerarIdAutomatico(clientes),
+    historicoPedidos: [] // inicia sempre vazio
+  };
+
+  clientes.push(novoCliente);
+
+  try {
+    salvarJSON<Cliente[]>(CAMINHO_CLIENTES, clientes);
+  } catch (err) {
+    console.error("❌ Erro ao salvar cliente:", err);
+  }
+
+  return novoCliente;
 }
 
-// --- Buscar cliente pelo CPF ---
+/**
+ * Busca um cliente pelo CPF
+ */
 export function buscarClientePorCPF(cpf: string): Cliente | undefined {
-  return carregarClientes().find(c => c.cpf === cpf);
-}
-
-// --- Listar todos os clientes ---
-export function listarClientes(): Cliente[] {
-  return carregarClientes();
+  const clientes = listarTodosClientes();
+  return clientes.find(c => c.cpf === cpf);
 }

@@ -1,0 +1,14 @@
+[
+  {
+    "nome": "Pizza de Calabresa",
+    "preco": 54,
+    "categoria": "pizza",
+    "id": 1
+  },
+  {
+    "nome": "Pizza de Frango",
+    "preco": 54,
+    "categoria": "pizza",
+    "id": 2
+  }
+]

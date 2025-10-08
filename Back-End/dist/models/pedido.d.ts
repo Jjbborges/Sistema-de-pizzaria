@@ -1,27 +1,24 @@
-export interface CardapioItem {
-    id: number;
-    nome: string;
-    preco: number;
-}
+import { Produto } from "./produto";
+import { Cliente } from "./cliente";
+export type StatusPedido = "pendente" | "preparo" | "entregue" | "cancelado";
 export interface PedidoItem {
-    item: CardapioItem;
+    item: Produto;
     quantidade: number;
 }
 export interface Pedido {
+    pago: boolean;
+    clienteId: number;
     id: number;
-    data: string;
+    cliente: Cliente;
     itens: PedidoItem[];
     total: number;
-    pagamento: string;
-    endereco: string;
-    observacao: string;
+    pagamento: "dinheiro" | "cartao" | "pix";
+    enderecoEntrega: string;
+    observacao?: string;
+    data: string;
+    status: StatusPedido;
 }
-export interface Cliente {
-    id: number;
-    nome: string;
-    cpf: string;
-    telefone: string;
-    endereco: string;
-    historicoPedidos: Pedido[];
+export interface CardapioItem extends Produto {
 }
+export type { Cliente };
 //# sourceMappingURL=pedido.d.ts.map

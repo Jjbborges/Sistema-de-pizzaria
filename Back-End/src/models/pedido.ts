@@ -1,14 +1,34 @@
 import { Produto } from "./produto";
 import { Cliente } from "./cliente";
 
+// Status do pedido
+export type StatusPedido = "pendente" | "preparo" | "entregue" | "cancelado";
+
+// Item do pedido com quantidade
+export interface PedidoItem {
+  item: Produto;
+  quantidade: number;
+}
+
+// Pedido completo
 export interface Pedido {
-  endereco: any;
+  pago: boolean;
+  clienteId: number;
   id: number;
   cliente: Cliente;
-  itens: Produto[];
+  itens: PedidoItem[];
   total: number;
-  pagamento: string;
+  pagamento: "dinheiro" | "cartao" | "pix";
   enderecoEntrega: string;
   observacao?: string;
-  data: string; // formato: YYYY-MM-DD
+  data: string; // YYYY-MM-DD
+  status: StatusPedido;
 }
+
+// Caso queira um tipo para cardápio (opcional)
+export interface CardapioItem extends Produto {}
+export type {
+  // Status do pedido
+  Cliente
+};
+

@@ -1,4 +1,0 @@
-- Pizza mais pedida por mês, sabor mais pedido - Tentar o CSV
-- Promoção - Criar função no código fonte - fazendo
-- Emitir recibo de compra - Deixar no código fonte; corrigir CSV - fazendo
-- Correção de produto
