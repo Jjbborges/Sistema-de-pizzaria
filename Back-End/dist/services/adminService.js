@@ -1,56 +1,56 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.hashSenha = hashSenha;
 exports.listarAdmins = listarAdmins;
+exports.hashSenha = hashSenha;
 exports.autenticarAdmin = autenticarAdmin;
 exports.cadastrarAdmin = cadastrarAdmin;
+// src/services/adminService.ts
 const path = require("path");
-const fileUtils_1 = require("../utils/fileUtils");
+const fs = require("fs");
 const crypto = require("crypto");
 const CAMINHO_ADMINS = path.join(__dirname, "../../data/admins.json");
-// Função para gerar hash da senha
+// Cria o arquivo admins.json se não existir
+if (!fs.existsSync(CAMINHO_ADMINS)) {
+    fs.writeFileSync(CAMINHO_ADMINS, "[]", "utf-8");
+}
+function lerJSON(caminho) {
+    const conteudo = fs.readFileSync(caminho, "utf-8");
+    return JSON.parse(conteudo);
+}
+function salvarJSON(caminho, dados) {
+    fs.writeFileSync(caminho, JSON.stringify(dados, null, 2), "utf-8");
+}
+function listarAdmins() {
+    try {
+        return lerJSON(CAMINHO_ADMINS);
+    }
+    catch (err) {
+        console.error("Erro ao ler admins:", err);
+        return [];
+    }
+}
 function hashSenha(senha) {
     return crypto.createHash("sha256").update(senha).digest("hex");
 }
-// Lista todos os admins, cria o padrão se não existir
-function listarAdmins() {
-    try {
-        let admins = (0, fileUtils_1.lerJSON)(CAMINHO_ADMINS) || [];
-        if (admins.length === 0) {
-            const defaultAdmin = {
-                usuario: "admin",
-                senha: hashSenha("Miojincomqueijo77"),
-            };
-            (0, fileUtils_1.salvarJSON)(CAMINHO_ADMINS, [defaultAdmin]);
-            admins = [defaultAdmin];
-            console.log("Admin padrão criado: usuário='admin', senha='Miojincomqueijo77'");
-        }
-        return admins;
-    }
-    catch (err) {
-        console.error("Erro ao ler admins, criando admin padrão...", err);
-        const defaultAdmin = {
-            usuario: "admin",
-            senha: hashSenha("Miojincomqueijo77"),
-        };
-        (0, fileUtils_1.salvarJSON)(CAMINHO_ADMINS, [defaultAdmin]);
-        return [defaultAdmin];
-    }
+// Se ainda não existir, cria o admin padrão
+const adminsExistentes = listarAdmins();
+if (!adminsExistentes.find(a => a.usuario === "admin")) {
+    adminsExistentes.push({ usuario: "admin", senha: hashSenha("Miojincomqueijo77") });
+    salvarJSON(CAMINHO_ADMINS, adminsExistentes);
+    console.log("Admin padrão criado: admin / Miojincomqueijo77");
 }
-// Autenticação do admin
 function autenticarAdmin(usuario, senha) {
     const admins = listarAdmins();
     const senhaHash = hashSenha(senha);
     return admins.some(a => a.usuario === usuario && a.senha === senhaHash);
 }
-// Cadastrar novo admin
 function cadastrarAdmin(usuario, senha) {
     const admins = listarAdmins();
     if (admins.find(a => a.usuario === usuario))
-        return false;
+        return false; // já existe
     admins.push({ usuario, senha: hashSenha(senha) });
     try {
-        (0, fileUtils_1.salvarJSON)(CAMINHO_ADMINS, admins);
+        salvarJSON(CAMINHO_ADMINS, admins);
         return true;
     }
     catch (err) {
